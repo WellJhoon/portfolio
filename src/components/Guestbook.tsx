@@ -16,7 +16,7 @@ export default function Guestbook() {
   };
 
   return (
-    <section id="guestbook" className="py-20 lg:py-28 relative bg-[var(--surface-raised)]/40 border-t border-[var(--border)] transition-colors duration-300">
+    <section id="guestbook" className="py-20 lg:py-28 scroll-mt-20 relative bg-[var(--surface-raised)]/40 border-t border-[var(--border)] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">

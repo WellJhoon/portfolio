@@ -37,6 +37,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
   const [errorMsg, setErrorMsg] = useState("");
 
   const isDrawingRef = useRef(false);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const floodFill = (grid: string[], startIndex: number, targetColor: string, replacementColor: string) => {
     if (targetColor === replacementColor) return grid;
@@ -93,6 +94,26 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
   const handlePointerUp = () => {
     isDrawingRef.current = false;
+  };
+
+  const handleTouchDraw = (e: React.TouchEvent) => {
+    if (tool === "bucket") return;
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const rect = grid.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    if (x >= 0 && x < rect.width && y >= 0 && y < rect.height) {
+      const col = Math.floor((x / rect.width) * 16);
+      const row = Math.floor((y / rect.height) * 16);
+      const index = Math.max(0, Math.min(255, row * 16 + col));
+      applyPixelColor(index);
+    }
   };
 
   const clearCanvas = () => {
@@ -163,6 +184,9 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
       <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 justify-center">
         <div className="space-y-4 flex flex-col items-center">
           <div
+            ref={gridRef}
+            onTouchStart={handleTouchDraw}
+            onTouchMove={handleTouchDraw}
             className="p-2 bg-[#090b10] border-2 border-[var(--border-strong)] rounded-sm shadow-inner touch-none cursor-crosshair"
             style={{
               display: "grid",
