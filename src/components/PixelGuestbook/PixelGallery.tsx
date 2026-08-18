@@ -61,14 +61,21 @@ export default function PixelGallery() {
               className="p-3 rounded-sm bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--carmine)]/70 transition-all flex flex-col items-center space-y-2.5 group shadow-sm"
             >
               <div
-                className="grid grid-cols-16 gap-[0.5px] p-1 bg-[#090b10] border border-[var(--border-strong)] rounded-xs shadow-inner"
-                style={{ width: "96px", height: "96px" }}
+                className="p-1 bg-[#090b10] border border-[var(--border-strong)] rounded-xs shadow-inner"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(16, 1fr)",
+                  gridTemplateRows: "repeat(16, 1fr)",
+                  gap: "0.5px",
+                  width: "96px",
+                  height: "96px"
+                }}
               >
                 {entry.pixels.map((color, pIdx) => (
                   <div
                     key={pIdx}
                     style={{ backgroundColor: color }}
-                    className="w-1.5 h-1.5"
+                    className="w-full h-full"
                   />
                 ))}
               </div>

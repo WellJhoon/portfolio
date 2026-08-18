@@ -145,11 +145,18 @@ export default function AdminPage() {
                       className="p-4 rounded-sm bg-[var(--surface)] border border-[var(--border)] flex flex-col items-center space-y-3"
                     >
                       <div
-                        className="grid grid-cols-16 gap-[0.5px] p-1 bg-[#090b10] border border-[var(--border-strong)] rounded-xs"
-                        style={{ width: "128px", height: "128px" }}
+                        className="p-1 bg-[#090b10] border border-[var(--border-strong)] rounded-xs"
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(16, 1fr)",
+                          gridTemplateRows: "repeat(16, 1fr)",
+                          gap: "0.5px",
+                          width: "128px",
+                          height: "128px"
+                        }}
                       >
                         {item.pixels.map((color, pIdx) => (
-                          <div key={pIdx} style={{ backgroundColor: color }} className="w-2 h-2" />
+                          <div key={pIdx} style={{ backgroundColor: color }} className="w-full h-full" />
                         ))}
                       </div>
 
@@ -205,11 +212,18 @@ export default function AdminPage() {
                     className="p-3 rounded-sm bg-[var(--surface)] border border-[var(--border)] flex flex-col items-center space-y-2"
                   >
                     <div
-                      className="grid grid-cols-16 gap-[0.5px] p-0.5 bg-[#090b10] border border-[var(--border-strong)] rounded-xs"
-                      style={{ width: "80px", height: "80px" }}
+                      className="p-0.5 bg-[#090b10] border border-[var(--border-strong)] rounded-xs"
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(16, 1fr)",
+                        gridTemplateRows: "repeat(16, 1fr)",
+                        gap: "0.5px",
+                        width: "80px",
+                        height: "80px"
+                      }}
                     >
                       {item.pixels.map((color, pIdx) => (
-                        <div key={pIdx} style={{ backgroundColor: color }} className="w-1.2 h-1.2" />
+                        <div key={pIdx} style={{ backgroundColor: color }} className="w-full h-full" />
                       ))}
                     </div>
 

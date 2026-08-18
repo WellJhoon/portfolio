@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Paintbrush, Eraser, RotateCcw, Send, CheckCircle2, PaintBucket } from "lucide-react";
+import { Paintbrush, Eraser, RotateCcw, Send, CheckCircle2, PaintBucket, Pipette } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 const PALETTE = [
@@ -163,8 +163,15 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
       <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 justify-center">
         <div className="space-y-4 flex flex-col items-center">
           <div
-            className="grid grid-cols-16 gap-[1px] p-2 bg-[#090b10] border-2 border-[var(--border-strong)] rounded-sm shadow-inner touch-none cursor-crosshair"
-            style={{ width: "272px", height: "272px" }}
+            className="p-2 bg-[#090b10] border-2 border-[var(--border-strong)] rounded-sm shadow-inner touch-none cursor-crosshair"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(16, 1fr)",
+              gridTemplateRows: "repeat(16, 1fr)",
+              gap: "1px",
+              width: "288px",
+              height: "288px"
+            }}
           >
             {pixels.map((color, index) => (
               <div
@@ -172,7 +179,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
                 onPointerDown={() => handlePointerDown(index)}
                 onPointerEnter={() => handlePointerEnter(index)}
                 style={{ backgroundColor: color }}
-                className="w-4 h-4 rounded-[1px] hover:opacity-80 transition-opacity"
+                className="w-full h-full rounded-[1px] hover:opacity-80 transition-opacity"
               />
             ))}
           </div>
@@ -227,7 +234,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-1.5 max-w-[260px]">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 max-w-[272px]">
             {PALETTE.map((col) => (
               <button
                 key={col}
@@ -239,11 +246,31 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
                 style={{ backgroundColor: col }}
                 className={`w-6 h-6 rounded-sm border transition-transform ${
                   selectedColor === col && tool !== "eraser"
-                    ? "scale-110 border-white ring-2 ring-[var(--carmine)]"
+                    ? "scale-110 border-white ring-2 ring-[var(--carmine)] shadow-sm"
                     : "border-black/40 hover:scale-105"
                 }`}
               />
             ))}
+
+            <label
+              className={`relative w-6 h-6 rounded-sm border border-[var(--border-strong)] flex items-center justify-center cursor-pointer overflow-hidden transition-all bg-[var(--surface-raised)] hover:scale-105 ${
+                !PALETTE.includes(selectedColor) && tool !== "eraser"
+                  ? "ring-2 ring-[var(--carmine)] border-white scale-110"
+                  : ""
+              }`}
+              title={language === "es" ? "Color personalizado" : "Custom color"}
+            >
+              <input
+                type="color"
+                value={selectedColor}
+                onChange={(e) => {
+                  setSelectedColor(e.target.value);
+                  if (tool === "eraser") setTool("pencil");
+                }}
+                className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+              />
+              <Pipette className="w-3.5 h-3.5 text-[var(--text-primary)]" style={{ color: selectedColor !== "#000000" ? selectedColor : "inherit" }} />
+            </label>
           </div>
         </div>
 
@@ -266,7 +293,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
             <div>
               <label className="block text-xs font-semibold text-[var(--text-muted)] mb-1">
-                {language === "es" ? "Enlace (GitHub / LinkedIn / X)" : "Link (GitHub / LinkedIn / X)"}
+                {language === "es" ? "Enlace (GitHub / LinkedIn / X)" : "Link (GitHub / LinkedIn / X / Instagram)"}
               </label>
               <input
                 type="url"
