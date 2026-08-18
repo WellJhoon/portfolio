@@ -1,6 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getApprovedEntries, createEntry } from "@/lib/guestbook";
 
+async function sendTelegramNotification(authorName: string, authorSocial?: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return;
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jhon-medina.vercel.app";
+  const text = `🎨 *Nueva Firma de Pixel Art*\n\n👤 *Autor:* ${authorName}\n🔗 *Perfil:* ${authorSocial || "No especificado"}\n\n👉 [Abrir Panel de Moderación](${siteUrl}/admin)`;
+
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+        parse_mode: "Markdown"
+      })
+    });
+  } catch {}
+}
+
 export async function GET() {
   try {
     const entries = await getApprovedEntries();
@@ -28,6 +49,8 @@ export async function POST(req: NextRequest) {
       authorSocial: authorSocial?.trim(),
       pixels
     });
+
+    sendTelegramNotification(entry.authorName, entry.authorSocial);
 
     return NextResponse.json({
       success: true,

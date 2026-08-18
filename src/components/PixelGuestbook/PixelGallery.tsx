@@ -1,9 +1,42 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ExternalLink, Sparkles, UserCheck } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { PixelArtEntry } from "@/lib/guestbook";
+
+function PixelArtThumbnail({ pixels, size = 104 }: { pixels: string[]; size?: number }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, 16, 16);
+    for (let i = 0; i < 256; i++) {
+      const x = i % 16;
+      const y = Math.floor(i / 16);
+      ctx.fillStyle = pixels[i] || "#000000";
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }, [pixels]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={16}
+      height={16}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        imageRendering: "pixelated"
+      }}
+      className="rounded-xs border border-[var(--border-strong)] block bg-black shadow-inner"
+    />
+  );
+}
 
 export default function PixelGallery() {
   const { language } = useLanguage();
@@ -60,25 +93,7 @@ export default function PixelGallery() {
               key={entry.id}
               className="p-3 rounded-sm bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--carmine)]/70 transition-all flex flex-col items-center space-y-2.5 group shadow-sm"
             >
-              <div
-                className="p-1 bg-[#090b10] border border-[var(--border-strong)] rounded-xs shadow-inner"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(16, 1fr)",
-                  gridTemplateRows: "repeat(16, 1fr)",
-                  gap: "0.5px",
-                  width: "96px",
-                  height: "96px"
-                }}
-              >
-                {entry.pixels.map((color, pIdx) => (
-                  <div
-                    key={pIdx}
-                    style={{ backgroundColor: color }}
-                    className="w-full h-full"
-                  />
-                ))}
-              </div>
+              <PixelArtThumbnail pixels={entry.pixels} size={104} />
 
               <div className="w-full text-center space-y-1 pt-1 border-t border-[var(--border)]/60">
                 <div className="flex items-center justify-center gap-1 text-[11px] font-bold text-[var(--text-primary)] truncate">

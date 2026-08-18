@@ -1,9 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check, X, Shield, RefreshCw, Lock, AlertCircle } from "lucide-react";
+import { ArrowLeft, Check, X, Shield, Lock, AlertCircle } from "lucide-react";
 import { PixelArtEntry } from "@/lib/guestbook";
+
+function PixelArtThumbnail({ pixels, size = 120 }: { pixels: string[]; size?: number }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, 16, 16);
+    for (let i = 0; i < 256; i++) {
+      const x = i % 16;
+      const y = Math.floor(i / 16);
+      ctx.fillStyle = pixels[i] || "#000000";
+      ctx.fillRect(x, y, 1, 1);
+    }
+  }, [pixels]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={16}
+      height={16}
+      style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        imageRendering: "pixelated"
+      }}
+      className="rounded-xs border border-[var(--border-strong)] block bg-black shadow-inner"
+    />
+  );
+}
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
@@ -61,7 +94,6 @@ export default function AdminPage() {
 
   const pendingEntries = entries.filter((e) => e.status === "pending");
   const approvedEntries = entries.filter((e) => e.status === "approved");
-  const rejectedEntries = entries.filter((e) => e.status === "rejected");
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text-primary)] font-mono-custom p-4 sm:p-8">
@@ -144,21 +176,7 @@ export default function AdminPage() {
                       key={item.id}
                       className="p-4 rounded-sm bg-[var(--surface)] border border-[var(--border)] flex flex-col items-center space-y-3"
                     >
-                      <div
-                        className="p-1 bg-[#090b10] border border-[var(--border-strong)] rounded-xs"
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "repeat(16, 1fr)",
-                          gridTemplateRows: "repeat(16, 1fr)",
-                          gap: "0.5px",
-                          width: "128px",
-                          height: "128px"
-                        }}
-                      >
-                        {item.pixels.map((color, pIdx) => (
-                          <div key={pIdx} style={{ backgroundColor: color }} className="w-full h-full" />
-                        ))}
-                      </div>
+                      <PixelArtThumbnail pixels={item.pixels} size={128} />
 
                       <div className="w-full text-center space-y-0.5 text-xs">
                         <div className="font-bold text-[var(--text-primary)]">{item.authorName}</div>
@@ -211,21 +229,7 @@ export default function AdminPage() {
                     key={item.id}
                     className="p-3 rounded-sm bg-[var(--surface)] border border-[var(--border)] flex flex-col items-center space-y-2"
                   >
-                    <div
-                      className="p-0.5 bg-[#090b10] border border-[var(--border-strong)] rounded-xs"
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(16, 1fr)",
-                        gridTemplateRows: "repeat(16, 1fr)",
-                        gap: "0.5px",
-                        width: "80px",
-                        height: "80px"
-                      }}
-                    >
-                      {item.pixels.map((color, pIdx) => (
-                        <div key={pIdx} style={{ backgroundColor: color }} className="w-full h-full" />
-                      ))}
-                    </div>
+                    <PixelArtThumbnail pixels={item.pixels} size={80} />
 
                     <div className="w-full text-center text-[11px] font-bold truncate">
                       {item.authorName}
