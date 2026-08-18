@@ -3,7 +3,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { ArrowLeft, Check, X, Shield, Lock, AlertCircle, LogOut, RefreshCw, Loader2 } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
 import { PixelArtEntry } from "@/lib/guestbook";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
 function PixelArtThumbnail({ pixels, size = 120 }: { pixels: string[]; size?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -92,6 +96,32 @@ export default function AdminPage() {
       setIsInitializing(false);
     }
   }, [authenticateWithPassword]);
+
+  useEffect(() => {
+    if (!isAuthenticated || !password) return;
+
+    if (supabaseUrl && supabaseAnonKey) {
+      const supabase = createClient(supabaseUrl, supabaseAnonKey);
+      const channel = supabase
+        .channel("guestbook_realtime_admin")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "guestbook"
+          },
+          () => {
+            authenticateWithPassword(password);
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, [isAuthenticated, password, authenticateWithPassword]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
