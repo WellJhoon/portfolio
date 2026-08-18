@@ -22,38 +22,46 @@ const vt323 = VT323({
   display: "swap"
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jhon-medina.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Jhon Medina | Full Stack Software Engineer",
+  metadataBase: new URL(siteUrl),
+  title: "Jhon Medina | Senior Full Stack Software Engineer",
   description:
-    "Software Engineer especializado en Angular 18+, React/Next.js, C# .NET, Java y automatización con Cypress. Experiencia en Fintech, Salud y Sector Público.",
+    "Portafolio oficial de Jhon Medina. Software Engineer especializado en Angular 18+, Next.js, C# .NET, Java microservicios y Cypress E2E. Fintech, Salud y Sector Gubernamental.",
   keywords: [
     "Jhon Medina",
-    "Software Engineer",
+    "Jhon Medina Software Engineer",
+    "Jhon Medina Developer",
     "Full Stack Developer",
     "Angular 18",
-    "Cypress",
-    "Java",
+    "Cypress E2E",
+    "Java Spring Boot",
     ".NET Core",
-    "Next.js",
-    "Clean Architecture",
+    "Next.js 16",
+    "Frontend Architect",
     "Santo Domingo",
     "República Dominicana"
   ],
   authors: [{ name: "Jhon Medina", url: "https://github.com/WellJhoon" }],
   creator: "Jhon Medina",
+  alternates: {
+    canonical: "/"
+  },
   openGraph: {
     type: "website",
     locale: "es_DO",
-    url: "https://github.com/WellJhoon",
-    title: "Jhon Medina · Full Stack Software Engineer",
+    url: siteUrl,
+    title: "Jhon Medina · Senior Full Stack Software Engineer",
     description:
-      "Construcción de aplicaciones web escalables, arquitecturas limpias y suites E2E para Fintech, Salud y Sector Público.",
+      "Arquitecturas escalables, sistemas transaccionales y automatización de pruebas con Cypress. Angular 18, Java, .NET Core y Next.js.",
     siteName: "Jhon Medina Portfolio"
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Jhon Medina · Full Stack Software Engineer",
-    description: "Angular 18+, Next.js, Java, .NET Core y Cypress E2E."
+    card: "summary",
+    title: "Jhon Medina · Senior Full Stack Software Engineer",
+    description: "Angular 18+, Next.js, Java, .NET Core y Cypress E2E.",
+    creator: "@WellJhoon"
   },
   icons: {
     icon: "/favicon.svg",
@@ -61,8 +69,63 @@ export const metadata: Metadata = {
   },
   robots: {
     index: true,
-    follow: true
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1
+    }
   }
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#person`,
+      name: "Jhon Medina",
+      jobTitle: "Senior Full Stack Software Engineer",
+      description:
+        "Software Engineer specialized in distributed transactional architectures, Angular 18+, Java enterprise microservices, .NET Core, and Cypress test automation.",
+      url: siteUrl,
+      sameAs: [
+        "https://github.com/WellJhoon",
+        "https://www.linkedin.com/in/jhon-medina-well"
+      ],
+      knowsAbout: [
+        "Angular",
+        "TypeScript",
+        "JavaScript",
+        "Java",
+        "Spring Boot",
+        ".NET Core",
+        "Next.js",
+        "Cypress",
+        "SQL Server",
+        "MongoDB",
+        "Microservices",
+        "PCI-DSS"
+      ],
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Santo Domingo",
+        addressCountry: "DO"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "Jhon Medina Portfolio",
+      publisher: {
+        "@id": `${siteUrl}/#person`
+      },
+      inLanguage: ["es", "en"]
+    }
+  ]
 };
 
 export default function RootLayout({
@@ -75,6 +138,12 @@ export default function RootLayout({
       lang="es"
       className={`${inter.variable} ${jetbrainsMono.variable} ${vt323.variable} dark scroll-smooth`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen bg-[var(--bg)] text-[var(--text-primary)] font-sans antialiased flex flex-col selection:bg-[var(--carmine)] selection:text-white">
         <LanguageProvider>{children}</LanguageProvider>
       </body>
