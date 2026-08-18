@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Download, Play, RotateCcw, Volume2, VolumeX, Shuffle, Trophy, Gamepad2, ArrowLeft, ArrowRight, ArrowUp } from "lucide-react";
+import { Download, Play, RotateCcw, Volume2, VolumeX, Shuffle, Trophy, Gamepad2, ArrowLeft, ArrowRight, ArrowUp, Swords } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import TechNinjaGame from "@/components/TechNinjaGame";
 
 interface Player {
   x: number;
@@ -150,6 +151,7 @@ const LEVELS: LevelConfig[] = [
 
 export default function GameMode() {
   const { content } = useLanguage();
+  const [gameModeType, setGameModeType] = useState<"ninja" | "platformer">("ninja");
   const [gameState, setGameState] = useState<"idle" | "playing" | "won" | "gameover">("idle");
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [coinsCollected, setCoinsCollected] = useState(0);
@@ -534,7 +536,7 @@ export default function GameMode() {
         cancelAnimationFrame(animFrameRef.current);
       }
     };
-  }, [playSound, triggerDownload]);
+  }, [playSound, triggerDownload, gameModeType]);
 
   const setTouchKey = (key: "left" | "right" | "jump", state: boolean) => {
     keysRef.current[key] = state;
@@ -555,185 +557,221 @@ export default function GameMode() {
               </div>
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-[var(--carmine)] font-bold">jhon@fedora:</span>
-                <span className="text-[var(--text-primary)]">~/arcade/super-jhon-bros</span>
-                <span className="px-2 py-0.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-[11px] font-semibold text-[var(--amber-glow)]">
-                  {activeLevel.badge}
+                <span className="text-[var(--text-primary)] truncate">
+                  {gameModeType === "ninja" ? "~/arcade/tech-ninja" : "~/arcade/super-jhon-bros"}
                 </span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 text-xs text-[var(--text-muted)]">
-                <span>{content.game.coinsLabel}:</span>
-                <span className="text-[var(--amber-glow)] font-bold">{coinsCollected} / {activeLevel.coins.length}</span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setSoundEnabled(!soundEnabled)}
-                className="p-1.5 rounded-sm border border-[var(--border)] hover:border-[var(--carmine)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
-                aria-label={soundEnabled ? "Silenciar" : "Activar sonido"}
-                title="Sonido"
-              >
-                {soundEnabled ? <Volume2 className="w-4 h-4 text-[var(--amber-glow)]" /> : <VolumeX className="w-4 h-4" />}
-              </button>
-
-              <button
-                type="button"
-                onClick={triggerDownload}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-semibold transition-all shadow-xs group"
-                title="Descargar CV directamente sin jugar"
-              >
-                <Download className="w-3.5 h-3.5" />
-                <span>{content.game.downloadDirect}</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="relative w-full bg-[var(--bg)] flex items-center justify-center p-2 sm:p-4">
-            <div className="relative w-full aspect-[16/8] max-w-[900px] border-2 border-[var(--border)] rounded-sm overflow-hidden bg-[var(--bg)] shadow-inner">
-              <canvas
-                ref={canvasRef}
-                width={CANVAS_WIDTH}
-                height={CANVAS_HEIGHT}
-                className="w-full h-full block"
-              />
-
-              {gameState === "idle" && (
-                <div className="absolute inset-0 bg-[var(--surface)]/90 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center space-y-4">
-                  <Gamepad2 className="w-12 h-12 text-[var(--carmine)] animate-pulse" />
-                  <div className="space-y-1">
-                    <h3 className="font-pixel-custom text-4xl sm:text-5xl text-[var(--text-primary)] tracking-wider uppercase">
-                      {content.game.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-md">
-                      {content.game.description}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 pt-2">
-                    <button
-                      type="button"
-                      onClick={startGame}
-                      className="flex items-center gap-2 px-6 py-3 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-sm font-bold transition-all shadow-lg shadow-[var(--carmine)]/20 group"
-                    >
-                      <Shuffle className="w-4 h-4 group-hover:rotate-45 transition-transform" />
-                      <span>{content.game.playRandom}</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={triggerDownload}
-                      className="flex items-center gap-2 px-4 py-3 rounded-sm border border-[var(--border)] hover:border-[var(--amber-glow)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>{content.game.downloadBypass}</span>
-                    </button>
-                  </div>
-                  <p className="text-[11px] text-[var(--text-subtle)]">
-                    {content.game.controlsText}
-                  </p>
-                </div>
-              )}
-
-              {gameState === "gameover" && (
-                <div className="absolute inset-0 bg-[var(--surface)]/95 flex flex-col items-center justify-center p-6 text-center space-y-3 z-30">
-                  <span className="font-pixel-custom text-5xl text-rose-500 font-bold tracking-wider">
-                    {content.game.gameOver}
+                {gameModeType === "platformer" && (
+                  <span className="hidden sm:inline px-2 py-0.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-[11px] font-semibold text-[var(--amber-glow)]">
+                    {activeLevel.badge}
                   </span>
-                  <p className="text-xs text-[var(--text-muted)]">
-                    {activeLevel.name}
-                  </p>
-                  <div className="flex items-center gap-3 pt-2">
-                    <button
-                      type="button"
-                      onClick={startGame}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-md"
-                    >
-                      <RotateCcw className="w-3.5 h-3.5" />
-                      <span>{content.game.retry}</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={triggerDownload}
-                      className="flex items-center gap-1.5 px-4 py-2.5 rounded-sm border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>{content.hero.downloadCv}</span>
-                    </button>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
+            </div>
 
-              {gameState === "won" && (
-                <div className="absolute inset-0 bg-[var(--surface)]/95 flex flex-col items-center justify-center p-6 text-center space-y-4 z-30">
-                  <Trophy className="w-14 h-14 text-[var(--amber-glow)] animate-bounce" />
-                  <div className="space-y-1">
-                    <span className="font-pixel-custom text-5xl text-emerald-500 font-bold tracking-wider">
-                      {content.game.stageClear}
-                    </span>
-                    <p className="text-xs text-[var(--text-muted)]">
-                      {content.game.levelLabel}: <span className="text-[var(--text-primary)] font-bold">{activeLevel.name}</span>
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3 pt-2">
-                    <button
-                      type="button"
-                      onClick={triggerDownload}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] text-white text-xs font-bold transition-all shadow-md"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>{content.hero.downloadCv}</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={startGame}
-                      className="flex items-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
-                    >
-                      <RotateCcw className="w-3.5 h-3.5" />
-                      <span>{content.game.nextLevel}</span>
-                    </button>
-                  </div>
-                </div>
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-1 bg-[var(--surface)] p-0.5 rounded-sm border border-[var(--border)] text-xs">
+                <button
+                  type="button"
+                  onClick={() => setGameModeType("ninja")}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-xs text-[11px] font-bold transition-all ${
+                    gameModeType === "ninja"
+                      ? "bg-[var(--carmine)] text-white shadow-xs"
+                      : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                  }`}
+                >
+                  <Swords className="w-3 h-3" />
+                  <span>Tech Ninja</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setGameModeType("platformer")}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-xs text-[11px] font-bold transition-all ${
+                    gameModeType === "platformer"
+                      ? "bg-[var(--carmine)] text-white shadow-xs"
+                      : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                  }`}
+                >
+                  <Gamepad2 className="w-3 h-3" />
+                  <span>Super Jhon</span>
+                </button>
+              </div>
+
+              {gameModeType === "platformer" && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setSoundEnabled(!soundEnabled)}
+                    className="hidden sm:inline-flex p-1.5 rounded-sm border border-[var(--border)] hover:border-[var(--carmine)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
+                    aria-label={soundEnabled ? "Silenciar" : "Activar sonido"}
+                    title="Sonido"
+                  >
+                    {soundEnabled ? <Volume2 className="w-4 h-4 text-[var(--amber-glow)]" /> : <VolumeX className="w-4 h-4" />}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={triggerDownload}
+                    className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-semibold transition-all shadow-xs group"
+                    title="Descargar CV directamente sin jugar"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>{content.game.downloadDirect}</span>
+                  </button>
+                </>
               )}
             </div>
           </div>
 
-          <div className="px-4 sm:px-6 py-3 bg-[var(--surface-raised)] border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-            <div className="flex items-center gap-4">
-              <span>{content.game.levelLabel}: <strong className="text-[var(--text-primary)]">{activeLevel.name}</strong></span>
-              <span className="hidden sm:inline text-[var(--text-subtle)]">|</span>
-              <span>{content.game.controlsText}</span>
-            </div>
+          {gameModeType === "ninja" ? (
+            <TechNinjaGame />
+          ) : (
+            <>
+              <div className="relative w-full bg-[var(--bg)] flex items-center justify-center p-2 sm:p-4">
+                <div className="relative w-full aspect-[16/8] max-w-[900px] border-2 border-[var(--border)] rounded-sm overflow-hidden bg-[var(--bg)] shadow-inner">
+                  <canvas
+                    ref={canvasRef}
+                    width={CANVAS_WIDTH}
+                    height={CANVAS_HEIGHT}
+                    className="w-full h-full block"
+                  />
 
-            <div className="flex items-center gap-2 sm:hidden w-full justify-center pt-2">
-              <button
-                type="button"
-                onPointerDown={() => setTouchKey("left", true)}
-                onPointerUp={() => setTouchKey("left", false)}
-                className="p-3 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-[var(--text-primary)] active:bg-[var(--carmine)]"
-                aria-label="Izquierda"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onPointerDown={() => setTouchKey("jump", true)}
-                onPointerUp={() => setTouchKey("jump", false)}
-                className="px-6 py-3 rounded-sm bg-[var(--carmine)] text-white font-bold active:bg-[var(--carmine-light)]"
-                aria-label="Saltar"
-              >
-                <ArrowUp className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onPointerDown={() => setTouchKey("right", true)}
-                onPointerUp={() => setTouchKey("right", false)}
-                className="p-3 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-[var(--text-primary)] active:bg-[var(--carmine)]"
-                aria-label="Derecha"
-              >
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+                  {gameState === "idle" && (
+                    <div className="absolute inset-0 bg-[var(--surface)]/90 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center space-y-4">
+                      <Gamepad2 className="w-12 h-12 text-[var(--carmine)] animate-pulse" />
+                      <div className="space-y-1">
+                        <h3 className="font-pixel-custom text-4xl sm:text-5xl text-[var(--text-primary)] tracking-wider uppercase">
+                          {content.game.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-md">
+                          {content.game.description}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={startGame}
+                          className="flex items-center gap-2 px-6 py-3 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-sm font-bold transition-all shadow-lg shadow-[var(--carmine)]/20 group"
+                        >
+                          <Shuffle className="w-4 h-4 group-hover:rotate-45 transition-transform" />
+                          <span>{content.game.playRandom}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={triggerDownload}
+                          className="flex items-center gap-2 px-4 py-3 rounded-sm border border-[var(--border)] hover:border-[var(--amber-glow)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span>{content.game.downloadBypass}</span>
+                        </button>
+                      </div>
+                      <p className="text-[11px] text-[var(--text-subtle)]">
+                        {content.game.controlsText}
+                      </p>
+                    </div>
+                  )}
+
+                  {gameState === "gameover" && (
+                    <div className="absolute inset-0 bg-[var(--surface)]/95 flex flex-col items-center justify-center p-6 text-center space-y-3 z-30">
+                      <span className="font-pixel-custom text-5xl text-rose-500 font-bold tracking-wider">
+                        {content.game.gameOver}
+                      </span>
+                      <p className="text-xs text-[var(--text-muted)]">
+                        {activeLevel.name}
+                      </p>
+                      <div className="flex items-center gap-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={startGame}
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-md"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                          <span>{content.game.retry}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={triggerDownload}
+                          className="flex items-center gap-1.5 px-4 py-2.5 rounded-sm border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span>{content.hero.downloadCv}</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {gameState === "won" && (
+                    <div className="absolute inset-0 bg-[var(--surface)]/95 flex flex-col items-center justify-center p-6 text-center space-y-4 z-30">
+                      <Trophy className="w-14 h-14 text-[var(--amber-glow)] animate-bounce" />
+                      <div className="space-y-1">
+                        <span className="font-pixel-custom text-5xl text-emerald-500 font-bold tracking-wider">
+                          {content.game.stageClear}
+                        </span>
+                        <p className="text-xs text-[var(--text-muted)]">
+                          {content.game.levelLabel}: <span className="text-[var(--text-primary)] font-bold">{activeLevel.name}</span>
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={triggerDownload}
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] text-white text-xs font-bold transition-all shadow-md"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>{content.hero.downloadCv}</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={startGame}
+                          className="flex items-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" />
+                          <span>{content.game.nextLevel}</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="px-4 sm:px-6 py-3 bg-[var(--surface-raised)] border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
+                <div className="flex items-center gap-4">
+                  <span>{content.game.levelLabel}: <strong className="text-[var(--text-primary)]">{activeLevel.name}</strong></span>
+                  <span className="hidden sm:inline text-[var(--text-subtle)]">|</span>
+                  <span>{content.game.controlsText}</span>
+                </div>
+
+                <div className="flex items-center gap-2 sm:hidden w-full justify-center pt-2">
+                  <button
+                    type="button"
+                    onPointerDown={() => setTouchKey("left", true)}
+                    onPointerUp={() => setTouchKey("left", false)}
+                    className="p-3 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-[var(--text-primary)] active:bg-[var(--carmine)]"
+                    aria-label="Izquierda"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onPointerDown={() => setTouchKey("jump", true)}
+                    onPointerUp={() => setTouchKey("jump", false)}
+                    className="px-6 py-3 rounded-sm bg-[var(--carmine)] text-white font-bold active:bg-[var(--carmine-light)]"
+                    aria-label="Saltar"
+                  >
+                    <ArrowUp className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onPointerDown={() => setTouchKey("right", true)}
+                    onPointerUp={() => setTouchKey("right", false)}
+                    className="p-3 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-[var(--text-primary)] active:bg-[var(--carmine)]"
+                    aria-label="Derecha"
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
 
         </div>
       </div>
