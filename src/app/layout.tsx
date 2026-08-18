@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, VT323 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
@@ -146,6 +147,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-[var(--bg)] text-[var(--text-primary)] font-sans antialiased flex flex-col selection:bg-[var(--carmine)] selection:text-white">
         <LanguageProvider>{children}</LanguageProvider>
+        <Analytics />
       </body>
     </html>
   );
