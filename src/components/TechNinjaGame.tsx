@@ -606,13 +606,15 @@ export default function TechNinjaGame() {
       </div>
 
       <div
-        className="relative w-full aspect-[4/5] max-h-[460px] bg-[#0c0f17] overflow-hidden touch-none cursor-crosshair"
-        onMouseDown={handlePointerDown}
-        onMouseMove={handlePointerMove}
-        onMouseUp={handlePointerUp}
-        onTouchStart={handlePointerDown}
-        onTouchMove={handlePointerMove}
-        onTouchEnd={handlePointerUp}
+        className={`relative w-full aspect-[4/5] max-h-[460px] bg-[#0c0f17] overflow-hidden ${
+          gameState === "playing" ? "touch-none cursor-crosshair" : "touch-pan-y cursor-default"
+        }`}
+        onMouseDown={gameState === "playing" ? handlePointerDown : undefined}
+        onMouseMove={gameState === "playing" ? handlePointerMove : undefined}
+        onMouseUp={gameState === "playing" ? handlePointerUp : undefined}
+        onTouchStart={gameState === "playing" ? handlePointerDown : undefined}
+        onTouchMove={gameState === "playing" ? handlePointerMove : undefined}
+        onTouchEnd={gameState === "playing" ? handlePointerUp : undefined}
       >
         <canvas ref={canvasRef} className="w-full h-full block" />
 
