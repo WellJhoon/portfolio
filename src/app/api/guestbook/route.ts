@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       pixels
     });
 
-    sendTelegramNotification(entry.authorName, entry.authorSocial);
+    await sendTelegramNotification(entry.authorName, entry.authorSocial);
 
     return NextResponse.json({
       success: true,
