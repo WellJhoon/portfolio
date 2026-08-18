@@ -9,10 +9,12 @@ export interface PixelArtEntry {
   createdAt: string;
 }
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-
-export const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+  if (!url || !key) return null;
+  return createClient(url, key);
+}
 
 let memoryStore: PixelArtEntry[] = [
   {
@@ -43,6 +45,7 @@ let memoryStore: PixelArtEntry[] = [
 ];
 
 export async function getApprovedEntries(): Promise<PixelArtEntry[]> {
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase
@@ -52,6 +55,9 @@ export async function getApprovedEntries(): Promise<PixelArtEntry[]> {
         .order("created_at", { ascending: false });
 
       if (!error && data) {
+        if (data.length === 0) {
+          return memoryStore.filter((e) => e.status === "approved");
+        }
         return data.map((item: any) => ({
           id: item.id,
           authorName: item.author_name || item.authorName,
@@ -67,6 +73,7 @@ export async function getApprovedEntries(): Promise<PixelArtEntry[]> {
 }
 
 export async function getAllEntries(): Promise<PixelArtEntry[]> {
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       const { data, error } = await supabase
@@ -75,6 +82,9 @@ export async function getAllEntries(): Promise<PixelArtEntry[]> {
         .order("created_at", { ascending: false });
 
       if (!error && data) {
+        if (data.length === 0) {
+          return memoryStore;
+        }
         return data.map((item: any) => ({
           id: item.id,
           authorName: item.author_name || item.authorName,
@@ -99,13 +109,14 @@ export async function createEntry(entry: Omit<PixelArtEntry, "id" | "status" | "
     createdAt: new Date().toISOString()
   };
 
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       await supabase.from("guestbook").insert({
         id: newEntry.id,
         author_name: newEntry.authorName,
         author_social: newEntry.authorSocial,
-        pixels: JSON.stringify(newEntry.pixels),
+        pixels: newEntry.pixels,
         status: newEntry.status,
         created_at: newEntry.createdAt
       });
@@ -117,6 +128,7 @@ export async function createEntry(entry: Omit<PixelArtEntry, "id" | "status" | "
 }
 
 export async function updateEntryStatus(id: string, status: "approved" | "rejected"): Promise<boolean> {
+  const supabase = getSupabaseClient();
   if (supabase) {
     try {
       await supabase
