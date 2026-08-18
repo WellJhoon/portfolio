@@ -1,16 +1,18 @@
 "use client";
 
-import { portfolioData } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 import { GraduationCap, Award, Calendar, CheckCircle2 } from "lucide-react";
 
 export default function Education() {
+  const { content } = useLanguage();
+
   return (
     <section id="education" className="py-20 lg:py-28 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 mb-12">
-          <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">05.</span>
+          <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">06.</span>
           <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
-            EDUCATION_&_CERTIFICATIONS
+            {content.educationTitle}
           </h2>
           <div className="h-px flex-1 bg-[var(--border)] ml-4" />
         </div>
@@ -19,10 +21,10 @@ export default function Education() {
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-2 font-mono-custom text-xs font-bold text-[var(--carmine)] uppercase tracking-wider pb-2 border-b border-[var(--border)]">
               <GraduationCap className="w-4 h-4" />
-              <span>FORMACIÓN ACADÉMICA</span>
+              <span>{content.academicTitle}</span>
             </div>
 
-            {portfolioData.education.map((edu, idx) => (
+            {content.education.map((edu, idx) => (
               <div
                 key={idx}
                 className="p-6 rounded-sm bg-[var(--surface)] border border-[var(--border)] space-y-3 shadow-sm relative overflow-hidden"
@@ -53,15 +55,15 @@ export default function Education() {
             <div className="flex items-center justify-between pb-2 border-b border-[var(--border)]">
               <div className="flex items-center gap-2 font-mono-custom text-xs font-bold text-[var(--carmine)] uppercase tracking-wider">
                 <Award className="w-4 h-4" />
-                <span>CERTIFICACIONES PROFESIONALES & ESTÁNDARES</span>
+                <span>{content.certificationsTitle}</span>
               </div>
               <span className="font-mono-custom text-xs text-[var(--text-muted)]">
-                {portfolioData.certifications.length} Verificadas
+                {content.certifications.length} {content.verifiedLabel}
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {portfolioData.certifications.map((cert, idx) => (
+              {content.certifications.map((cert, idx) => (
                 <div
                   key={idx}
                   className="p-3.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--carmine)]/50 transition-all flex flex-col justify-between gap-2 group shadow-sm"
@@ -79,7 +81,7 @@ export default function Education() {
                   <div className="flex items-center justify-between pt-2 border-t border-[var(--border)]/60 text-[11px] font-mono-custom">
                     <span className="flex items-center gap-1 text-emerald-500">
                       <CheckCircle2 className="w-3 h-3" />
-                      <span>Certified</span>
+                      <span>{content.certifiedBadge}</span>
                     </span>
                     <span className="px-2 py-0.5 rounded-sm bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--text-primary)] font-bold">
                       {cert.year}

@@ -1,9 +1,10 @@
 "use client";
 
-import { portfolioData } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function MarqueeTicker() {
-  const items = [...portfolioData.marquee, ...portfolioData.marquee];
+  const { content } = useLanguage();
+  const items = [...content.marquee, ...content.marquee];
 
   return (
     <div className="w-full border-y border-[var(--border)] bg-[var(--surface-raised)]/70 py-3 overflow-hidden select-none transition-colors duration-300">

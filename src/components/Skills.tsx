@@ -1,9 +1,11 @@
 "use client";
 
-import { portfolioData } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 import { Code2, Layout, Server, Database, ShieldCheck } from "lucide-react";
 
 export default function Skills() {
+  const { content } = useLanguage();
+
   const getCategoryIcon = (index: number) => {
     switch (index) {
       case 0:
@@ -25,13 +27,13 @@ export default function Skills() {
         <div className="flex items-center gap-3 mb-12">
           <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">03.</span>
           <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
-            TECHNICAL_STACK & TOOLS
+            {content.skillsTitle}
           </h2>
           <div className="h-px flex-1 bg-[var(--border)] ml-4" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {portfolioData.skillCategories.map((category, idx) => (
+          {content.skillCategories.map((category, idx) => (
             <div
               key={category.category}
               className="p-6 rounded-sm bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--border-strong)] transition-all space-y-4 shadow-sm"

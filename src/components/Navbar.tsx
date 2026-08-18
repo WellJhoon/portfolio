@@ -4,16 +4,21 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, ExternalLink } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { content } = useLanguage();
 
   const navLinks = [
-    { number: "01", label: "About", href: "#about" },
-    { number: "02", label: "Experience", href: "#experience" },
-    { number: "03", label: "Skills", href: "#skills" },
-    { number: "04", label: "Projects", href: "#projects" },
-    { number: "05", label: "Contact", href: "#contact" }
+    { number: "01", label: content.nav.about, href: "#about" },
+    { number: "02", label: content.nav.experience, href: "#experience" },
+    { number: "03", label: content.nav.skills, href: "#skills" },
+    { number: "04", label: content.nav.projects, href: "#projects" },
+    { number: "05", label: content.nav.gameMode, href: "#game-mode" },
+    { number: "06", label: content.nav.education, href: "#education" },
+    { number: "07", label: content.nav.contact, href: "#contact" }
   ];
 
   return (
@@ -28,15 +33,15 @@ export default function Navbar() {
           <span className="inline-block w-2 h-4 bg-[var(--carmine)] cursor-blink" />
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 lg:gap-8 font-mono-custom text-xs">
-          <nav className="flex items-center gap-6 lg:gap-8">
+        <div className="hidden lg:flex items-center gap-6 font-mono-custom text-xs">
+          <nav className="flex items-center gap-5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className="flex items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors py-1 group"
               >
-                <span className="text-[var(--carmine)] opacity-70 group-hover:opacity-100 transition-opacity">
+                <span className="text-[var(--carmine)] opacity-70 group-hover:opacity-100 transition-opacity text-[10px]">
                   {link.number}
                 </span>
                 <span className="group-hover:translate-x-0.5 transition-transform">
@@ -46,7 +51,8 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3 pl-4 border-l border-[var(--border)]">
+          <div className="flex items-center gap-2.5 pl-4 border-l border-[var(--border)]">
+            <LanguageToggle />
             <ThemeToggle />
             <a
               href="https://github.com/WellJhoon"
@@ -60,7 +66,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 md:hidden">
+        <div className="flex items-center gap-2 lg:hidden">
+          <LanguageToggle />
           <ThemeToggle />
           <button
             type="button"
@@ -74,7 +81,7 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[var(--surface)] border-b border-[var(--border)] px-4 pt-2 pb-6 space-y-3 font-mono-custom text-sm">
+        <div className="lg:hidden bg-[var(--surface)] border-b border-[var(--border)] px-4 pt-2 pb-6 space-y-2.5 font-mono-custom text-sm">
           {navLinks.map((link) => (
             <Link
               key={link.href}

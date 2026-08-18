@@ -1,21 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { portfolioData, Project } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 import { ExternalLink, FolderGit2 } from "lucide-react";
 import { GithubIcon } from "@/components/Icons";
 
 export default function Projects() {
-  const [filter, setFilter] = useState<"all" | "frontend" | "backend" | "qa">("all");
+  const { content } = useLanguage();
+  const [filter, setFilter] = useState<string>("all");
 
-  const categories = [
-    { key: "all", label: "All Projects" },
-    { key: "backend", label: "Backend & Arch" },
-    { key: "frontend", label: "Frontend & Fullstack" },
-    { key: "qa", label: "QA & Cypress E2E" }
-  ];
-
-  const filteredProjects = portfolioData.projects.filter((p) => {
+  const filteredProjects = content.projects.filter((p) => {
     if (filter === "all") return true;
     if (filter === "frontend") return p.category === "frontend" || p.category === "fullstack";
     if (filter === "backend") return p.category === "backend";
@@ -30,17 +24,17 @@ export default function Projects() {
           <div className="flex items-center gap-3">
             <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">04.</span>
             <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
-              FEATURED_PROJECTS
+              {content.projectsTitle}
             </h2>
             <div className="hidden sm:block h-px w-24 bg-[var(--border)] ml-4" />
           </div>
 
           <div className="flex flex-wrap gap-2 font-mono-custom text-xs">
-            {categories.map((c) => (
+            {content.projectFilters.map((c) => (
               <button
                 key={c.key}
                 type="button"
-                onClick={() => setFilter(c.key as any)}
+                onClick={() => setFilter(c.key)}
                 className={`px-3 py-1.5 rounded-sm transition-all ${
                   filter === c.key
                     ? "bg-[var(--carmine)] text-white font-semibold shadow-sm"

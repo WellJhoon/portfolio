@@ -1,22 +1,24 @@
 "use client";
 
-import { portfolioData } from "@/data/portfolio";
-import { Briefcase, Calendar, MapPin, Building2, CheckCircle2 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { Calendar, MapPin, Building2, CheckCircle2 } from "lucide-react";
 
 export default function Experience() {
+  const { content, language } = useLanguage();
+
   return (
     <section id="experience" className="py-20 lg:py-28 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 mb-12">
           <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">02.</span>
           <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
-            WORK_EXPERIENCE
+            {content.experiencesTitle}
           </h2>
           <div className="h-px flex-1 bg-[var(--border)] ml-4" />
         </div>
 
         <div className="space-y-8">
-          {portfolioData.experiences.map((exp) => (
+          {content.experiences.map((exp) => (
             <div
               key={exp.id}
               className="p-6 sm:p-8 rounded-sm bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--border-strong)] transition-all relative overflow-hidden group shadow-sm"
@@ -31,7 +33,7 @@ export default function Experience() {
                     </h3>
                     {exp.isCurrent && (
                       <span className="px-2 py-0.5 rounded-sm bg-[var(--carmine)]/15 border border-[var(--carmine)]/40 text-[var(--carmine)] font-mono-custom text-[11px] font-semibold">
-                        ACTUALIDAD
+                        {language === "es" ? "ACTUALIDAD" : "PRESENT"}
                       </span>
                     )}
                   </div>
