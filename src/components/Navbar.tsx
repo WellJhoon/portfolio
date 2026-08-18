@@ -12,13 +12,14 @@ export default function Navbar() {
   const { content } = useLanguage();
 
   const navLinks = [
-    { number: "01", label: content.nav.about, href: "#about" },
+    { number: "01", label: content.nav.about, href: "#hero" },
     { number: "02", label: content.nav.experience, href: "#experience" },
     { number: "03", label: content.nav.skills, href: "#skills" },
     { number: "04", label: content.nav.projects, href: "#projects" },
     { number: "05", label: content.nav.gameMode, href: "#game-mode" },
-    { number: "06", label: content.nav.education, href: "#education" },
-    { number: "07", label: content.nav.contact, href: "#contact" }
+    { number: "06", label: content.nav.guestbook, href: "#guestbook" },
+    { number: "07", label: content.nav.education, href: "#education" },
+    { number: "08", label: content.nav.contact, href: "#contact" }
   ];
 
   return (

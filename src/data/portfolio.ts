@@ -46,6 +46,7 @@ export interface PortfolioContent {
     skills: string;
     projects: string;
     gameMode: string;
+    guestbook: string;
     education: string;
     contact: string;
   };
@@ -123,6 +124,7 @@ export const portfolioContent: { es: PortfolioContent; en: PortfolioContent } = 
       skills: "Habilidades",
       projects: "Proyectos",
       gameMode: "Arcade",
+      guestbook: "Firma Pixel",
       education: "Certificados",
       contact: "Contacto"
     },
@@ -498,6 +500,7 @@ export const portfolioContent: { es: PortfolioContent; en: PortfolioContent } = 
       skills: "Skills",
       projects: "Projects",
       gameMode: "Arcade",
+      guestbook: "Pixel Guestbook",
       education: "Certifications",
       contact: "Contact"
     },
