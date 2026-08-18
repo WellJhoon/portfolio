@@ -45,20 +45,20 @@ export default function Hero() {
     >
       <div className="flex flex-col gap-4 flex-1 justify-center py-6">
 
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] font-mono-custom text-xs text-[var(--text-muted)] w-fit shadow-xs">
-          <Terminal className="w-3.5 h-3.5 text-[var(--carmine)]" />
-          <span>zsh — 80x24</span>
-          <span className="text-[var(--text-subtle)]">|</span>
-          <span className="text-emerald-500 flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
-            {content.personal.status}
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] font-mono-custom text-xs text-[var(--text-muted)] w-fit max-w-full shadow-xs">
+          <Terminal className="w-3.5 h-3.5 text-[var(--carmine)] shrink-0" />
+          <span className="shrink-0">zsh — 80x24</span>
+          <span className="text-[var(--text-subtle)] shrink-0">|</span>
+          <span className="text-emerald-500 flex items-center gap-1 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse shrink-0" />
+            <span className="truncate">{content.personal.status}</span>
           </span>
         </div>
 
         <div>
           <h1
-            className="font-pixel-custom uppercase leading-[0.9] select-none tracking-wide"
-            style={{ fontSize: "clamp(4.5rem, 14vw, 11rem)" }}
+            className="font-pixel-custom uppercase leading-[0.9] select-none tracking-wide break-words"
+            style={{ fontSize: "clamp(3.8rem, 13vw, 11rem)" }}
           >
             <span className="text-[var(--text-primary)] block">{content.hero.headingPart1}</span>
             <span className="text-[var(--carmine)] block">{content.hero.headingPart2}</span>
@@ -66,8 +66,8 @@ export default function Hero() {
 
           <div className="mt-3 h-7 flex items-center font-mono-custom text-sm sm:text-lg text-[var(--text-muted)]">
             <span className="text-[var(--carmine)] font-bold mr-2">&gt;</span>
-            <span className="text-[var(--text-primary)] font-semibold">{displayedText}</span>
-            <span className="inline-block w-2 h-4 bg-[var(--carmine)] cursor-blink ml-1" />
+            <span className="text-[var(--text-primary)] font-semibold truncate">{displayedText}</span>
+            <span className="inline-block w-2 h-4 bg-[var(--carmine)] cursor-blink ml-1 shrink-0" />
           </div>
         </div>
 
@@ -76,7 +76,7 @@ export default function Hero() {
             <span className="font-mono-custom text-[11px] uppercase tracking-wider text-[var(--carmine)] font-semibold">
               // 01. ABOUT ME
             </span>
-            <p className="text-xs text-[var(--text-muted)] leading-relaxed line-clamp-4">
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
               {content.personal.aboutMe}
             </p>
           </div>
@@ -85,7 +85,7 @@ export default function Hero() {
             <span className="font-mono-custom text-[11px] uppercase tracking-wider text-[var(--amber-glow)] font-semibold">
               // 02. CURRENT FOCUS
             </span>
-            <p className="text-xs text-[var(--text-muted)] leading-relaxed line-clamp-4">
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
               {content.personal.rightNow}
             </p>
           </div>
@@ -107,10 +107,10 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-2">
+        <div className="flex flex-wrap items-center gap-2.5 pt-2">
           <Link
             href="#projects"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white font-mono-custom text-sm font-semibold transition-all group shadow-md"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white font-mono-custom text-xs sm:text-sm font-semibold transition-all group shadow-md text-center"
           >
             <span>{content.hero.viewProjects}</span>
             <ArrowDownRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
@@ -119,7 +119,7 @@ export default function Hero() {
           <a
             href="/jhon-medina-cv.pdf"
             download="Jhon_Medina_CV.pdf"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-sm border border-[var(--carmine)] bg-[var(--carmine)]/10 hover:bg-[var(--carmine)] hover:text-white text-[var(--text-primary)] font-mono-custom text-sm font-semibold transition-all group"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--carmine)] bg-[var(--carmine)]/10 hover:bg-[var(--carmine)] hover:text-white text-[var(--text-primary)] font-mono-custom text-xs sm:text-sm font-semibold transition-all group text-center"
           >
             <Download className="w-4 h-4 text-[var(--carmine)] group-hover:text-white transition-colors" />
             <span>{content.hero.downloadCv}</span>
@@ -127,27 +127,27 @@ export default function Hero() {
 
           <Link
             href="#game-mode"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--border-strong)] bg-[var(--surface)] hover:border-[var(--amber-glow)] text-[var(--text-primary)] font-mono-custom text-sm transition-all group"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-sm border border-[var(--border-strong)] bg-[var(--surface)] hover:border-[var(--amber-glow)] text-[var(--text-primary)] font-mono-custom text-xs sm:text-sm transition-all group text-center"
           >
             <Gamepad2 className="w-4 h-4 text-[var(--amber-glow)] group-hover:rotate-12 transition-transform" />
             <span>{content.hero.gameMode}</span>
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               type="button"
               onClick={handleCopyEmail}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] text-[var(--text-muted)] hover:text-[var(--text-primary)] font-mono-custom text-sm transition-all"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] text-[var(--text-muted)] hover:text-[var(--text-primary)] font-mono-custom text-xs sm:text-sm transition-all"
               title="Copy email address"
             >
               {copied ? (
                 <>
-                  <Check className="w-4 h-4 text-emerald-500" />
+                  <Check className="w-3.5 h-3.5 text-emerald-500" />
                   <span className="text-emerald-500">{content.hero.copied}</span>
                 </>
               ) : (
                 <>
-                  <Copy className="w-4 h-4" />
+                  <Copy className="w-3.5 h-3.5" />
                   <span>{content.hero.copyEmail}</span>
                 </>
               )}
@@ -160,7 +160,7 @@ export default function Hero() {
               className="p-2.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
               aria-label="GitHub Profile"
             >
-              <GithubIcon className="w-5 h-5" />
+              <GithubIcon className="w-4 h-4" />
             </a>
 
             <a
@@ -170,7 +170,7 @@ export default function Hero() {
               className="p-2.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
               aria-label="LinkedIn Profile"
             >
-              <LinkedinIcon className="w-5 h-5" />
+              <LinkedinIcon className="w-4 h-4" />
             </a>
           </div>
         </div>

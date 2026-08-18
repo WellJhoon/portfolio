@@ -9,6 +9,7 @@ import Guestbook from "@/components/Guestbook";
 import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import MobileDock from "@/components/MobileDock";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <MobileDock />
     </div>
   );
 }

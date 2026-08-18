@@ -5,6 +5,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { ExternalLink, FolderGit2 } from "lucide-react";
 import { GithubIcon } from "@/components/Icons";
 
+import SpotlightCard from "@/components/SpotlightCard";
+
 export default function Projects() {
   const { content } = useLanguage();
   const [filter, setFilter] = useState<string>("all");
@@ -49,9 +51,9 @@ export default function Projects() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
-            <div
+            <SpotlightCard
               key={project.id}
-              className="p-6 rounded-sm bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--carmine)]/60 transition-all flex flex-col justify-between group relative overflow-hidden shadow-sm"
+              className="p-6 flex flex-col justify-between group shadow-sm hover:border-[var(--carmine)]/60"
             >
               <div className="space-y-4 mb-6">
                 <div className="flex items-center justify-between gap-2">
@@ -117,7 +119,7 @@ export default function Projects() {
                   </span>
                 ))}
               </div>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>
