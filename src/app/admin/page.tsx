@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check, X, Shield, Lock, AlertCircle } from "lucide-react";
+import { ArrowLeft, Check, X, Shield, Lock, AlertCircle, LogOut, RefreshCw, Loader2 } from "lucide-react";
 import { PixelArtEntry } from "@/lib/guestbook";
 
 function PixelArtThumbnail({ pixels, size = 120 }: { pixels: string[]; size?: number }) {
@@ -41,13 +41,13 @@ function PixelArtThumbnail({ pixels, size = 120 }: { pixels: string[]; size?: nu
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [entries, setEntries] = useState<PixelArtEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [authError, setAuthError] = useState("");
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const authenticateWithPassword = useCallback(async (pwd: string) => {
     setAuthError("");
     setLoading(true);
 
@@ -55,21 +55,56 @@ export default function AdminPage() {
       const res = await fetch("/api/guestbook/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, action: "list" })
+        body: JSON.stringify({ password: pwd, action: "list" })
       });
 
       const data = await res.json();
       if (data.success && Array.isArray(data.entries)) {
         setIsAuthenticated(true);
+        setPassword(pwd);
         setEntries(data.entries);
+        if (typeof window !== "undefined") {
+          sessionStorage.setItem("admin_session_auth", pwd);
+        }
       } else {
         setAuthError(data.error || "Contraseña incorrecta");
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("admin_session_auth");
+        }
       }
     } catch {
       setAuthError("Error de conexión");
     } finally {
       setLoading(false);
+      setIsInitializing(false);
     }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedAuth = sessionStorage.getItem("admin_session_auth");
+      if (savedAuth) {
+        authenticateWithPassword(savedAuth);
+      } else {
+        setIsInitializing(false);
+      }
+    } else {
+      setIsInitializing(false);
+    }
+  }, [authenticateWithPassword]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await authenticateWithPassword(password);
+  };
+
+  const handleLogout = () => {
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("admin_session_auth");
+    }
+    setIsAuthenticated(false);
+    setPassword("");
+    setEntries([]);
   };
 
   const handleUpdateStatus = async (id: string, status: "approved" | "rejected") => {
@@ -105,16 +140,47 @@ export default function AdminPage() {
             <h1 className="text-lg sm:text-xl font-bold">Panel de Moderación · Pixel Guestbook</h1>
           </div>
 
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-all"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Volver al Portafolio</span>
-          </Link>
+          <div className="flex items-center gap-2">
+            {isAuthenticated && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => authenticateWithPassword(password)}
+                  disabled={loading}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
+                  title="Recargar datos"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+                  <span className="hidden sm:inline">Refrescar</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-rose-500/30 text-xs text-rose-500 hover:bg-rose-500 hover:text-white transition-all"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                  <span>Cerrar Sesión</span>
+                </button>
+              </>
+            )}
+
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-strong)] transition-all"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Volver al Portafolio</span>
+            </Link>
+          </div>
         </div>
 
-        {!isAuthenticated ? (
+        {isInitializing ? (
+          <div className="py-24 flex flex-col items-center justify-center gap-3 text-xs text-[var(--text-muted)]">
+            <Loader2 className="w-6 h-6 animate-spin text-[var(--carmine)]" />
+            <span>Verificando sesión...</span>
+          </div>
+        ) : !isAuthenticated ? (
           <div className="max-w-md mx-auto my-20 p-6 sm:p-8 rounded-sm bg-[var(--surface)] border border-[var(--border-strong)] shadow-2xl space-y-6">
             <div className="flex items-center gap-2 text-sm font-bold text-[var(--carmine)]">
               <Lock className="w-4 h-4" />

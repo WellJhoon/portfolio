@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { ExternalLink, Sparkles, UserCheck } from "lucide-react";
+import { createClient } from "@supabase/supabase-js";
 import { useLanguage } from "@/context/LanguageContext";
 import { PixelArtEntry } from "@/lib/guestbook";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
 function PixelArtThumbnail({ pixels, size = 104 }: { pixels: string[]; size?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -43,7 +47,7 @@ export default function PixelGallery() {
   const [entries, setEntries] = useState<PixelArtEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchEntries = async () => {
+  const fetchEntries = useCallback(async () => {
     try {
       const res = await fetch("/api/guestbook");
       const data = await res.json();
@@ -53,11 +57,36 @@ export default function PixelGallery() {
     } catch {} finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchEntries();
-  }, []);
+
+    if (supabaseUrl && supabaseAnonKey) {
+      const supabase = createClient(supabaseUrl, supabaseAnonKey);
+      const channel = supabase
+        .channel("guestbook_realtime_public")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "guestbook"
+          },
+          () => {
+            fetchEntries();
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+
+    const interval = setInterval(fetchEntries, 10000);
+    return () => clearInterval(interval);
+  }, [fetchEntries]);
 
   return (
     <div className="space-y-6 font-mono-custom">
