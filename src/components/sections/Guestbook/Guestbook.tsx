@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Palette, Terminal, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import PixelCanvas from "./PixelGuestbook/PixelCanvas";
-import PixelGallery from "./PixelGuestbook/PixelGallery";
+import PixelCanvas from "./PixelCanvas";
+import PixelGallery from "./PixelGallery";
 
 export default function Guestbook() {
   const { language } = useLanguage();

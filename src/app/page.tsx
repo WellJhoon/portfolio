@@ -1,19 +1,21 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import MarqueeTicker from "@/components/MarqueeTicker";
-import Experience from "@/components/Experience";
-import Skills from "@/components/Skills";
-import Projects from "@/components/Projects";
-import GameMode from "@/components/GameMode";
-import Guestbook from "@/components/Guestbook";
-import Education from "@/components/Education";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import MobileDock from "@/components/MobileDock";
-import CommandPalette from "@/components/CommandPalette";
-import SecurityAuditor from "@/components/SecurityAuditor";
-import EasterEggKonami from "@/components/EasterEggKonami";
-import GlobalRadarMap from "@/components/GlobalRadarMap";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import MobileDock from "@/components/layout/MobileDock";
+import MarqueeTicker from "@/components/layout/MarqueeTicker";
+
+import Hero from "@/components/sections/Hero/Hero";
+import Experience from "@/components/sections/Experience";
+import Skills from "@/components/sections/Skills";
+import Projects from "@/components/sections/Projects/Projects";
+import GameMode from "@/components/sections/Arcade/GameMode";
+import GlobalRadarMap from "@/components/sections/Radar/GlobalRadarMap";
+import Guestbook from "@/components/sections/Guestbook/Guestbook";
+import Education from "@/components/sections/Education";
+import Contact from "@/components/sections/Contact";
+
+import CommandPalette from "@/components/ui/CommandPalette";
+import SecurityAuditor from "@/components/ui/SecurityAuditor";
+import EasterEggKonami from "@/components/ui/EasterEggKonami";
 
 export default function Home() {
   return (

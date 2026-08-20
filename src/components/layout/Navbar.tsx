@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ExternalLink } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
-import LanguageToggle from "@/components/LanguageToggle";
-import SoundToggle from "@/components/SoundToggle";
+import ThemeToggle from "@/components/ui/ThemeToggle";
+import LanguageToggle from "@/components/ui/LanguageToggle";
+import SoundToggle from "@/components/ui/SoundToggle";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Navbar() {

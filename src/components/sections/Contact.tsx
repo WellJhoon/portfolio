@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Mail, Copy, Check, MapPin, Terminal, ArrowUpRight } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/Icons";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 
 export default function Contact() {
   const { content, language } = useLanguage();

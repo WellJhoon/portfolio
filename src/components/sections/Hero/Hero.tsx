@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Copy, Check, ArrowDownRight, Terminal, Download, Gamepad2, Activity } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "@/components/Icons";
+import { GithubIcon, LinkedinIcon } from "@/components/ui/Icons";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Hero() {

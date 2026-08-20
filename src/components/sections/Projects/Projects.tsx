@@ -3,10 +3,9 @@
 import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { ExternalLink, FolderGit2 } from "lucide-react";
-import { GithubIcon } from "@/components/Icons";
-
-import SpotlightCard from "@/components/SpotlightCard";
-import ProjectSimulator from "@/components/ProjectSimulator";
+import { GithubIcon } from "@/components/ui/Icons";
+import SpotlightCard from "@/components/ui/SpotlightCard";
+import ProjectSimulator from "./ProjectSimulator";
 
 export default function Projects() {
   const { content } = useLanguage();

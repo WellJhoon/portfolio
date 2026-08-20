@@ -5,7 +5,7 @@ import { Globe, Radio, Activity } from "lucide-react";
 import { sound } from "@/lib/sound";
 import { useLanguage } from "@/context/LanguageContext";
 import { CountryRadarStat, VisitorPing } from "@/lib/visitors";
-import WorldMapSVG from "@/components/WorldMapSVG";
+import WorldMapSVG from "./WorldMapSVG";
 
 async function detectClientLocation() {
   try {
