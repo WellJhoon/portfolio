@@ -111,7 +111,8 @@ body {
   animation: marquee 35s linear infinite;
 }
 
-.animate-marquee-infinite:hover {
+.animate-marquee-infinite:hover,
+.animate-marquee-infinite:focus-within {
   animation-play-state: paused;
 }
 

@@ -6,7 +6,7 @@ import { Mail, Copy, Check, MapPin, Terminal, ArrowUpRight } from "lucide-react"
 import { GithubIcon, LinkedinIcon } from "@/components/Icons";
 
 export default function Contact() {
-  const { content } = useLanguage();
+  const { content, language } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopyEmail = () => {
@@ -45,27 +45,43 @@ export default function Contact() {
               {content.contact.description}
             </p>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <a
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${content.personal.email}&su=${encodeURIComponent(language === "es" ? "Propuesta de Proyecto / Contacto Profesional" : "Project Inquiry / Professional Contact")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white font-mono-custom text-sm font-bold transition-all group shadow-md"
+              >
+                <Mail className="w-4 h-4" />
+                <span>{language === "es" ? "Redactar en Gmail" : "Compose in Gmail"}</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+
               <button
                 type="button"
                 onClick={handleCopyEmail}
-                className="flex items-center justify-center gap-3 px-6 py-3.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white font-mono-custom text-sm font-semibold transition-all group shadow-md"
+                className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-sm border border-[var(--border-strong)] bg-[var(--surface-raised)] hover:border-[var(--carmine)] text-[var(--text-primary)] font-mono-custom text-sm font-semibold transition-all group cursor-pointer"
+                title="Copiar dirección de email"
               >
-                <Mail className="w-4 h-4" />
-                <span>{content.personal.email}</span>
                 {copied ? (
-                  <Check className="w-4 h-4 text-emerald-300 ml-1" />
+                  <>
+                    <Check className="w-4 h-4 text-emerald-500" />
+                    <span className="text-emerald-500">{language === "es" ? "Copiado!" : "Copied!"}</span>
+                  </>
                 ) : (
-                  <Copy className="w-4 h-4 text-white/70 ml-1 group-hover:text-white" />
+                  <>
+                    <Copy className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--carmine)]" />
+                    <span>{content.personal.email}</span>
+                  </>
                 )}
               </button>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <a
                   href={content.personal.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-3.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-primary)] font-mono-custom text-sm transition-all"
+                  className="flex items-center gap-2 px-3.5 py-3.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-primary)] font-mono-custom text-sm transition-all"
                 >
                   <LinkedinIcon className="w-4 h-4 text-[var(--carmine)]" />
                   <span>LinkedIn</span>
@@ -76,7 +92,7 @@ export default function Contact() {
                   href={content.personal.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-3.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-primary)] font-mono-custom text-sm transition-all"
+                  className="flex items-center gap-2 px-3.5 py-3.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-primary)] font-mono-custom text-sm transition-all"
                 >
                   <GithubIcon className="w-4 h-4 text-[var(--carmine)]" />
                   <span>GitHub</span>

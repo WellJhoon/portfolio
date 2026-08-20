@@ -3,6 +3,19 @@
 import { useLanguage } from "@/context/LanguageContext";
 import { Code2, Layout, Server, Database, ShieldCheck } from "lucide-react";
 
+const CORE_SKILLS = [
+  "Angular 18+",
+  "Next.js (App Router)",
+  "TypeScript",
+  "C# (.NET)",
+  "Java",
+  "Spring Boot",
+  "ASP.NET Core Web API",
+  "Cypress (E2E)",
+  "Clean Architecture",
+  "SQL Server"
+];
+
 export default function Skills() {
   const { content } = useLanguage();
 
@@ -46,14 +59,22 @@ export default function Skills() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {category.items.map((skill) => (
-                  <span
-                    key={skill.name}
-                    className="px-3 py-1.5 rounded-sm bg-[var(--surface-raised)] border border-[var(--border)] font-mono-custom text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--carmine)]/50 transition-colors"
-                  >
-                    {skill.name}
-                  </span>
-                ))}
+                {category.items.map((skill) => {
+                  const isCore = CORE_SKILLS.includes(skill.name);
+                  return (
+                    <span
+                      key={skill.name}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm font-mono-custom text-xs transition-all ${
+                        isCore
+                          ? "bg-[var(--carmine)]/10 border border-[var(--carmine)]/50 text-[var(--text-primary)] font-semibold shadow-2xs"
+                          : "bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--carmine)]/40"
+                      }`}
+                    >
+                      {isCore && <span className="w-1.5 h-1.5 rounded-full bg-[var(--carmine)] shrink-0" />}
+                      <span>{skill.name}</span>
+                    </span>
+                  );
+                })}
               </div>
             </div>
           ))}

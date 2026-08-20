@@ -78,10 +78,10 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="flex flex-col justify-between px-4 sm:px-6 lg:px-8 pt-20"
+      className="flex flex-col justify-between px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28"
       style={{ minHeight: "calc(100vh - 0px)", maxWidth: "80rem", margin: "0 auto" }}
     >
-      <div className="flex flex-col gap-4 flex-1 justify-center py-6">
+      <div className="flex flex-col gap-6 sm:gap-7 flex-1 justify-center py-8">
 
         <div className="inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] font-mono-custom text-xs text-[var(--text-muted)] w-fit max-w-full shadow-xs">
           <div className="flex items-center gap-1.5 shrink-0">
@@ -158,37 +158,40 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5 pt-2">
-          <Link
-            href="#projects"
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white font-mono-custom text-xs sm:text-sm font-semibold transition-all group shadow-md text-center"
-          >
-            <span>{content.hero.viewProjects}</span>
-            <ArrowDownRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
-          </Link>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-2">
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="#projects"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white font-mono-custom text-xs sm:text-sm font-bold transition-all group shadow-md text-center"
+            >
+              <span>{content.hero.viewProjects}</span>
+              <ArrowDownRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
+            </Link>
 
-          <a
-            href="/jhon-medina-cv.pdf"
-            download="Jhon_Medina_CV.pdf"
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--carmine)] bg-[var(--carmine)]/10 hover:bg-[var(--carmine)] hover:text-white text-[var(--text-primary)] font-mono-custom text-xs sm:text-sm font-semibold transition-all group text-center"
-          >
-            <Download className="w-4 h-4 text-[var(--carmine)] group-hover:text-white transition-colors" />
-            <span>{content.hero.downloadCv}</span>
-          </a>
+            <a
+              href="/jhon-medina-cv.pdf"
+              download="Jhon_Medina_CV.pdf"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--carmine)] bg-[var(--carmine)]/10 hover:bg-[var(--carmine)] hover:text-white text-[var(--text-primary)] font-mono-custom text-xs sm:text-sm font-semibold transition-all group text-center"
+            >
+              <Download className="w-4 h-4 text-[var(--carmine)] group-hover:text-white transition-colors" />
+              <span>{content.hero.downloadCv}</span>
+            </a>
+          </div>
 
-          <Link
-            href="#game-mode"
-            className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-sm border border-[var(--border-strong)] bg-[var(--surface)] hover:border-[var(--amber-glow)] text-[var(--text-primary)] font-mono-custom text-xs sm:text-sm transition-all group text-center"
-          >
-            <Gamepad2 className="w-4 h-4 text-[var(--amber-glow)] group-hover:rotate-12 transition-transform" />
-            <span>{content.hero.gameMode}</span>
-          </Link>
+          <div className="flex items-center gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 sm:border-l border-[var(--border)] sm:pl-4">
+            <Link
+              href="#game-mode"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--amber-glow)] text-[var(--text-muted)] hover:text-[var(--text-primary)] font-mono-custom text-xs transition-all group"
+              title="Arcade Minigame"
+            >
+              <Gamepad2 className="w-3.5 h-3.5 text-[var(--amber-glow)] group-hover:rotate-12 transition-transform" />
+              <span>{content.hero.gameMode}</span>
+            </Link>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               type="button"
               onClick={handleCopyEmail}
-              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] text-[var(--text-muted)] hover:text-[var(--text-primary)] font-mono-custom text-xs sm:text-sm transition-all"
+              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] text-[var(--text-muted)] hover:text-[var(--text-primary)] font-mono-custom text-xs transition-all cursor-pointer"
               title="Copy email address"
             >
               {copied ? (
@@ -208,20 +211,20 @@ export default function Hero() {
               href={content.personal.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
+              className="p-2 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
               aria-label="GitHub Profile"
             >
-              <GithubIcon className="w-4 h-4" />
+              <GithubIcon className="w-3.5 h-3.5" />
             </a>
 
             <a
               href={content.personal.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
+              className="p-2 rounded-sm border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--carmine)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all"
               aria-label="LinkedIn Profile"
             >
-              <LinkedinIcon className="w-4 h-4" />
+              <LinkedinIcon className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>

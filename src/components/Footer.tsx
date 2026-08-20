@@ -21,11 +21,15 @@ export default function Footer() {
         </div>
 
         <div className="flex items-center gap-6">
-          <span className="text-[var(--text-subtle)]">Next.js 16 + TypeScript + Tailwind CSS</span>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xs bg-[var(--surface)] border border-[var(--border)] text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse" />
+            <span className="text-emerald-500 font-semibold">System: Operational</span>
+          </div>
+          <span className="text-[var(--text-subtle)] hidden md:inline">Next.js 16 + TypeScript + Tailwind</span>
           <button
             type="button"
             onClick={scrollToTop}
-            className="flex items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1"
+            className="flex items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 cursor-pointer"
             aria-label="Volver arriba"
           >
             <span>{content.footer.backToTop}</span>

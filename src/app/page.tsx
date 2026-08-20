@@ -10,6 +10,9 @@ import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import MobileDock from "@/components/MobileDock";
+import CommandPalette from "@/components/CommandPalette";
+import SecurityAuditor from "@/components/SecurityAuditor";
+import EasterEggKonami from "@/components/EasterEggKonami";
 
 export default function Home() {
   return (
@@ -19,6 +22,7 @@ export default function Home() {
         <Hero />
         <MarqueeTicker />
         <Experience />
+        <SecurityAuditor />
         <Skills />
         <Projects />
         <GameMode />
@@ -28,6 +32,8 @@ export default function Home() {
       </main>
       <Footer />
       <MobileDock />
+      <CommandPalette />
+      <EasterEggKonami />
     </div>
   );
 }
