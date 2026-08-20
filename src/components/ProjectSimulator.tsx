@@ -88,9 +88,9 @@ export default function ProjectSimulator({ projectId }: ProjectSimulatorProps) {
         </div>
       </div>
 
-      <div className="p-2.5 rounded-xs bg-[#090b10] border border-[var(--border-strong)] text-[11px] text-[var(--text-muted)] space-y-1.5 overflow-x-auto min-h-[85px] flex flex-col justify-center">
+      <div className="p-2.5 rounded-xs bg-[var(--surface-raised)] border border-[var(--border)] text-[11px] text-[var(--text-primary)] space-y-1.5 overflow-x-auto min-h-[85px] flex flex-col justify-center transition-colors duration-300">
         {stepIndex === 0 && !completed && (
-          <p className="text-[var(--text-subtle)] italic text-center py-2 text-[10px]">
+          <p className="text-[var(--text-muted)] italic text-center py-2 text-[10px]">
             {language === "es"
               ? "Presiona 'Ejecutar Simulación' para probar el flujo técnico."
               : "Press 'Run Simulation' to test this technical flow live."}
@@ -99,8 +99,8 @@ export default function ProjectSimulator({ projectId }: ProjectSimulatorProps) {
 
         {steps.slice(0, stepIndex).map((step, idx) => (
           <div key={idx} className="flex items-start gap-1.5 font-mono-custom leading-tight">
-            <span className={step.color || "text-emerald-400"}>›</span>
-            <span className={step.color || "text-[#f5f0ea]"}>{step.text}</span>
+            <span className={step.color || "text-emerald-600 dark:text-emerald-400"}>›</span>
+            <span className={step.color || "text-[var(--text-primary)]"}>{step.text}</span>
           </div>
         ))}
       </div>
@@ -132,36 +132,36 @@ function getSteps(id: string): StepItem[] {
   switch (id) {
     case "cypress-e2e-suite":
       return [
-        { text: "cy.intercept('POST', '/api/v1/payments/settle').as('settle')", color: "text-amber-400" },
-        { text: "cy.get('[data-cy=\"card-pan\"]').type('•••• 4242')", color: "text-sky-400" },
-        { text: "cy.get('[data-cy=\"submit-btn\"]').click()", color: "text-sky-400" },
-        { text: "cy.wait('@settle').its('response.statusCode').should('eq', 200)", color: "text-amber-400" },
-        { text: "✓ PCI-DSS Transaction Verified (4 tests passed, 380ms)", color: "text-emerald-400" }
+        { text: "cy.intercept('POST', '/api/v1/payments/settle').as('settle')", color: "text-amber-600 dark:text-amber-400" },
+        { text: "cy.get('[data-cy=\"card-pan\"]').type('•••• 4242')", color: "text-sky-600 dark:text-sky-400" },
+        { text: "cy.get('[data-cy=\"submit-btn\"]').click()", color: "text-sky-600 dark:text-sky-400" },
+        { text: "cy.wait('@settle').its('response.statusCode').should('eq', 200)", color: "text-amber-600 dark:text-amber-400" },
+        { text: "✓ PCI-DSS Transaction Verified (4 tests passed, 380ms)", color: "text-emerald-600 dark:text-emerald-400 font-bold" }
       ];
     case "ecommerce-net-clean":
       return [
-        { text: "Dispatching: CreateOrderCommand { CustomerId: 9812, Amount: $420.00 }", color: "text-sky-400" },
-        { text: "FluentValidation: Payload sanitized & validated without errors", color: "text-emerald-400" },
-        { text: "EF Core: INSERT INTO Orders (SQL Server transactional commit)", color: "text-purple-400" },
-        { text: "Result<OrderDto>.Success({ OrderId: 'ORD-2026', Status: 'Settled' })", color: "text-emerald-400" }
+        { text: "Dispatching: CreateOrderCommand { CustomerId: 9812, Amount: $420.00 }", color: "text-sky-600 dark:text-sky-400" },
+        { text: "FluentValidation: Payload sanitized & validated without errors", color: "text-emerald-600 dark:text-emerald-400" },
+        { text: "EF Core: INSERT INTO Orders (SQL Server transactional commit)", color: "text-purple-600 dark:text-purple-400" },
+        { text: "Result<OrderDto>.Success({ OrderId: 'ORD-2026', Status: 'Settled' })", color: "text-emerald-600 dark:text-emerald-400 font-bold" }
       ];
     case "agentic-ai-orchestrator":
       return [
-        { text: "Agent[Planner]: Parsing request intent & decomposing DAG pipeline", color: "text-amber-400" },
-        { text: "Agent[Worker]: Contextual retrieval from Redis Vector Store", color: "text-sky-400" },
-        { text: "Agent[Critic]: Validating output schema against Zod definitions", color: "text-purple-400" },
-        { text: "✓ Pipeline completed in 620ms (0 schema deviations)", color: "text-emerald-400" }
+        { text: "Agent[Planner]: Parsing request intent & decomposing DAG pipeline", color: "text-amber-600 dark:text-amber-400" },
+        { text: "Agent[Worker]: Contextual retrieval from Redis Vector Store", color: "text-sky-600 dark:text-sky-400" },
+        { text: "Agent[Critic]: Validating output schema against Zod definitions", color: "text-purple-600 dark:text-purple-400" },
+        { text: "✓ Pipeline completed in 620ms (0 schema deviations)", color: "text-emerald-600 dark:text-emerald-400 font-bold" }
       ];
     case "angular-fintech-portal":
       return [
-        { text: "Signal: merchantBalance.set($84,250.00)", color: "text-sky-400" },
-        { text: "RxJS Pipe: filter(tx => tx.pciCompliant).pipe(debounceTime(150))", color: "text-purple-400" },
-        { text: "DOM: Virtual table re-rendered with sub-millisecond diffing", color: "text-emerald-400" }
+        { text: "Signal: merchantBalance.set($84,250.00)", color: "text-sky-600 dark:text-sky-400" },
+        { text: "RxJS Pipe: filter(tx => tx.pciCompliant).pipe(debounceTime(150))", color: "text-purple-600 dark:text-purple-400" },
+        { text: "DOM: Virtual table re-rendered with sub-millisecond diffing", color: "text-emerald-600 dark:text-emerald-400 font-bold" }
       ];
     default:
       return [
-        { text: "Telemetry initialized: health check 200 OK", color: "text-sky-400" },
-        { text: "Architecture compliance verified", color: "text-emerald-400" }
+        { text: "Telemetry initialized: health check 200 OK", color: "text-sky-600 dark:text-sky-400" },
+        { text: "Architecture compliance verified", color: "text-emerald-600 dark:text-emerald-400 font-bold" }
       ];
   }
 }

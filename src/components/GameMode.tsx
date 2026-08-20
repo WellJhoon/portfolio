@@ -407,14 +407,13 @@ export default function GameMode() {
       ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
       const camX = Math.floor(cameraXRef.current);
-
       const grad = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
       if (isDarkMode) {
-        grad.addColorStop(0, "#08090d");
-        grad.addColorStop(1, "#0f121a");
+        grad.addColorStop(0, "#0c0d12");
+        grad.addColorStop(1, "#13161f");
       } else {
         grad.addColorStop(0, "#f7f5f0");
-        grad.addColorStop(1, "#ebe5d8");
+        grad.addColorStop(1, "#ede8df");
       }
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -433,7 +432,7 @@ export default function GameMode() {
           ctx.strokeStyle = isDarkMode ? "#252e42" : "#ded5c8";
           ctx.strokeRect(px, py, plat.w, plat.h);
         } else {
-          ctx.fillStyle = isDarkMode ? "#1b2130" : "#f0ede6";
+          ctx.fillStyle = isDarkMode ? "#1b2130" : "#ede8df";
           ctx.fillRect(px, py, plat.w, plat.h);
           ctx.fillStyle = isDarkMode ? "#38bdf8" : "#be123c";
           ctx.fillRect(px, py, plat.w, 3);
@@ -545,15 +544,53 @@ export default function GameMode() {
   return (
     <section id="game-mode" className="py-20 lg:py-28 relative bg-[var(--surface-raised)]/30 border-y border-[var(--border)] transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3 mb-10">
-          <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">05.</span>
-          <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
-            {language === "es" ? "MODO_ARCADE_INTERACTIVO" : "INTERACTIVE_ARCADE_MODE"}
-          </h2>
-          <div className="h-px flex-1 bg-[var(--border)] ml-4" />
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-3">
+            <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">05.</span>
+            <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
+              {language === "es" ? "MODO_ARCADE_INTERACTIVO" : "INTERACTIVE_ARCADE_MODE"}
+            </h2>
+            <div className="hidden sm:block h-px w-16 bg-[var(--border)] ml-2" />
+          </div>
+
+          <div className="flex items-center gap-2 bg-[var(--surface)] p-1.5 rounded-sm border-2 border-[var(--border-strong)] font-mono-custom shadow-sm">
+            <span className="text-[10px] uppercase font-bold text-[var(--text-muted)] px-2 hidden lg:inline">
+              {language === "es" ? "🎮 2 JUEGOS DISPONIBLES:" : "🎮 2 ARCADE GAMES:"}
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                sound.playClick();
+                setGameModeType("ninja");
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xs text-xs font-bold transition-all cursor-pointer ${
+                gameModeType === "ninja"
+                  ? "bg-[var(--carmine)] text-white shadow-md scale-102"
+                  : "bg-[var(--surface-raised)] text-[var(--text-primary)] hover:border-[var(--carmine)]"
+              }`}
+            >
+              <Swords className="w-3.5 h-3.5" />
+              <span>1. Tech Ninja</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                sound.playClick();
+                setGameModeType("platformer");
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xs text-xs font-bold transition-all cursor-pointer ${
+                gameModeType === "platformer"
+                  ? "bg-[var(--carmine)] text-white shadow-md scale-102"
+                  : "bg-[var(--surface-raised)] text-[var(--text-primary)] hover:border-[var(--carmine)]"
+              }`}
+            >
+              <Gamepad2 className="w-3.5 h-3.5" />
+              <span>2. Super Jhon Platformer</span>
+            </button>
+          </div>
         </div>
 
-        <div className="rounded-sm bg-[var(--surface)] border border-[var(--border-strong)] shadow-2xl overflow-hidden font-mono-custom transition-colors duration-300">
+        <div className="rounded-sm bg-[var(--surface)] border-2 border-[var(--border-strong)] shadow-2xl overflow-hidden font-mono-custom transition-colors duration-300">
           
           <div className="px-4 sm:px-6 py-3.5 bg-[var(--surface-raised)] border-b border-[var(--border)] flex flex-wrap items-center justify-between gap-3 select-none">
             <div className="flex items-center gap-3">
@@ -576,33 +613,6 @@ export default function GameMode() {
             </div>
 
             <div className="flex items-center gap-2.5">
-              <div className="flex items-center gap-1 bg-[var(--surface)] p-0.5 rounded-sm border border-[var(--border)] text-xs">
-                <button
-                  type="button"
-                  onClick={() => setGameModeType("ninja")}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-xs text-[11px] font-bold transition-all ${
-                    gameModeType === "ninja"
-                      ? "bg-[var(--carmine)] text-white shadow-xs"
-                      : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                  }`}
-                >
-                  <Swords className="w-3 h-3" />
-                  <span>Tech Ninja</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setGameModeType("platformer")}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-xs text-[11px] font-bold transition-all ${
-                    gameModeType === "platformer"
-                      ? "bg-[var(--carmine)] text-white shadow-xs"
-                      : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-                  }`}
-                >
-                  <Gamepad2 className="w-3 h-3" />
-                  <span>Super Jhon</span>
-                </button>
-              </div>
-
               {gameModeType === "platformer" && (
                 <>
                   <button
@@ -633,7 +643,7 @@ export default function GameMode() {
             <TechNinjaGame />
           ) : (
             <>
-              <div className="relative w-full bg-[var(--bg)] flex items-center justify-center p-2 sm:p-4">
+              <div className="relative w-full bg-[var(--bg)] flex items-center justify-center p-2 sm:p-4 transition-colors duration-300">
                 <div className="relative w-full aspect-[16/8] max-w-[900px] border-2 border-[var(--border)] rounded-sm overflow-hidden bg-[var(--bg)] shadow-inner">
                   <canvas
                     ref={canvasRef}
@@ -643,7 +653,7 @@ export default function GameMode() {
                   />
 
                   {gameState === "idle" && (
-                    <div className="absolute inset-0 bg-[var(--surface)]/90 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center space-y-4">
+                    <div className="absolute inset-0 bg-[var(--surface)]/95 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center space-y-4">
                       <Gamepad2 className="w-12 h-12 text-[var(--carmine)] animate-pulse" />
                       <div className="space-y-1">
                         <h3 className="font-pixel-custom text-4xl sm:text-5xl text-[var(--text-primary)] tracking-wider uppercase">
@@ -657,7 +667,7 @@ export default function GameMode() {
                         <button
                           type="button"
                           onClick={startGame}
-                          className="flex items-center gap-2 px-6 py-3 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-sm font-bold transition-all shadow-lg shadow-[var(--carmine)]/20 group"
+                          className="flex items-center gap-2 px-6 py-3 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-sm font-bold transition-all shadow-lg group cursor-pointer"
                         >
                           <Shuffle className="w-4 h-4 group-hover:rotate-45 transition-transform" />
                           <span>{content.game.playRandom}</span>
@@ -665,7 +675,7 @@ export default function GameMode() {
                         <button
                           type="button"
                           onClick={triggerDownload}
-                          className="flex items-center gap-2 px-4 py-3 rounded-sm border border-[var(--border)] hover:border-[var(--amber-glow)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
+                          className="flex items-center gap-2 px-4 py-3 rounded-sm border border-[var(--border)] hover:border-[var(--amber-glow)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all cursor-pointer"
                         >
                           <Download className="w-3.5 h-3.5" />
                           <span>{content.game.downloadBypass}</span>
@@ -689,7 +699,7 @@ export default function GameMode() {
                         <button
                           type="button"
                           onClick={startGame}
-                          className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-md"
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-md cursor-pointer"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
                           <span>{content.game.retry}</span>
@@ -697,7 +707,7 @@ export default function GameMode() {
                         <button
                           type="button"
                           onClick={triggerDownload}
-                          className="flex items-center gap-1.5 px-4 py-2.5 rounded-sm border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
+                          className="flex items-center gap-1.5 px-4 py-2.5 rounded-sm border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all cursor-pointer"
                         >
                           <Download className="w-3.5 h-3.5" />
                           <span>{content.hero.downloadCv}</span>
@@ -721,7 +731,7 @@ export default function GameMode() {
                         <button
                           type="button"
                           onClick={triggerDownload}
-                          className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] text-white text-xs font-bold transition-all shadow-md"
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-sm bg-[var(--carmine)] text-white text-xs font-bold transition-all shadow-md cursor-pointer"
                         >
                           <Download className="w-4 h-4" />
                           <span>{content.hero.downloadCv}</span>
@@ -729,7 +739,7 @@ export default function GameMode() {
                         <button
                           type="button"
                           onClick={startGame}
-                          className="flex items-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all"
+                          className="flex items-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text-primary)] text-xs transition-all cursor-pointer"
                         >
                           <RotateCcw className="w-3.5 h-3.5" />
                           <span>{content.game.nextLevel}</span>

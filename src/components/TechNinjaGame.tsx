@@ -294,10 +294,11 @@ export default function TechNinjaGame() {
 
       ctx.clearRect(0, 0, W, H);
 
-      ctx.fillStyle = "#0c0f17";
+      const isDark = typeof document !== "undefined" && document.documentElement.classList.contains("dark");
+      ctx.fillStyle = isDark ? "#0c0d12" : "#f7f5f0";
       ctx.fillRect(0, 0, W, H);
 
-      ctx.strokeStyle = "rgba(225, 29, 72, 0.05)";
+      ctx.strokeStyle = isDark ? "rgba(225, 29, 72, 0.08)" : "rgba(190, 18, 60, 0.08)";
       ctx.lineWidth = 1;
       const gridSize = 24;
       for (let x = 0; x < W; x += gridSize) {
@@ -380,7 +381,7 @@ export default function TechNinjaGame() {
           ctx.shadowBlur = 12;
           ctx.shadowColor = orb.color;
 
-          ctx.fillStyle = orb.isBug ? "#2a0808" : "#131b2e";
+          ctx.fillStyle = orb.isBug ? (isDark ? "#2a0808" : "#fee2e2") : (isDark ? "#131b2e" : "#ffffff");
           ctx.strokeStyle = orb.color;
           ctx.lineWidth = 2.5;
 
@@ -390,7 +391,7 @@ export default function TechNinjaGame() {
           ctx.stroke();
 
           ctx.shadowBlur = 0;
-          ctx.fillStyle = orb.isBug ? "#fca5a5" : "#ffffff";
+          ctx.fillStyle = orb.isBug ? (isDark ? "#fca5a5" : "#be123c") : (isDark ? "#ffffff" : "#1c1917");
           ctx.font = "bold 11px monospace";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
@@ -416,7 +417,7 @@ export default function TechNinjaGame() {
         ctx.translate(h.x, h.y);
         ctx.rotate(h.angle);
 
-        ctx.fillStyle = "#131b2e";
+        ctx.fillStyle = isDark ? "#131b2e" : "#ffffff";
         ctx.strokeStyle = h.color;
         ctx.lineWidth = 2;
 
@@ -430,7 +431,7 @@ export default function TechNinjaGame() {
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = isDark ? "#ffffff" : "#1c1917";
         ctx.font = "bold 9px monospace";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -606,7 +607,7 @@ export default function TechNinjaGame() {
       </div>
 
       <div
-        className={`relative w-full aspect-[4/5] max-h-[460px] bg-[#0c0f17] overflow-hidden ${
+        className={`relative w-full aspect-[4/5] max-h-[460px] bg-[var(--bg)] overflow-hidden transition-colors duration-300 ${
           gameState === "playing" ? "touch-none cursor-crosshair" : "touch-pan-y cursor-default"
         }`}
         onMouseDown={gameState === "playing" ? handlePointerDown : undefined}
