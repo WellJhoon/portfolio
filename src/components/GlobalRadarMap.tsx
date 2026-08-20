@@ -96,8 +96,8 @@ export default function GlobalRadarMap() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-8 p-4 sm:p-6 rounded-sm bg-[#090b10] border-2 border-[var(--border-strong)] relative overflow-hidden shadow-2xl flex flex-col justify-between select-none">
-            <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs font-mono-custom text-[var(--text-muted)]">
+          <div className="lg:col-span-8 p-4 sm:p-6 rounded-sm bg-[var(--surface)] border-2 border-[var(--border-strong)] relative overflow-hidden shadow-2xl flex flex-col justify-between select-none transition-colors duration-300">
+            <div className="flex items-center justify-between pb-3 border-b border-[var(--border)] text-xs font-mono-custom text-[var(--text-muted)]">
               <div className="flex items-center gap-2 text-[var(--carmine)] font-bold">
                 <Radio className="w-4 h-4 animate-pulse" />
                 <span>MERCATOR RADAR SCANNER v4.2</span>
@@ -105,7 +105,7 @@ export default function GlobalRadarMap() {
               <span className="text-[10px] text-[var(--amber-glow)] font-bold">AST TELEMETRY FEED</span>
             </div>
 
-            <div className="relative w-full aspect-[2/1] max-h-[420px] my-4 overflow-hidden rounded-xs bg-[#0c0f17] border border-white/5 flex items-center justify-center">
+            <div className="relative w-full aspect-[2/1] max-h-[420px] my-4 overflow-hidden rounded-xs bg-[var(--bg)] border border-[var(--border)] flex items-center justify-center transition-colors duration-300">
               <div
                 className="absolute inset-0 opacity-20 pointer-events-none"
                 style={{
@@ -134,7 +134,7 @@ export default function GlobalRadarMap() {
                     {c.count}
                   </span>
 
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded-xs bg-black/90 border border-[var(--carmine)] text-[10px] text-white font-mono-custom whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl z-30">
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 rounded-xs bg-[var(--surface-raised)] border border-[var(--carmine)] text-[10px] text-[var(--text-primary)] font-mono-custom whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl z-30">
                     <span className="mr-1">{c.flag}</span>
                     <span className="font-bold">{c.countryName}:</span> {c.count} {c.count === 1 ? "ping" : "pings"}
                   </div>
@@ -142,7 +142,7 @@ export default function GlobalRadarMap() {
               ))}
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10 text-xs font-mono-custom">
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[var(--border)] text-xs font-mono-custom">
               <div className="flex items-center gap-2 text-[var(--text-muted)] text-[11px]">
                 <Activity className="w-3.5 h-3.5 text-[var(--carmine)]" />
                 <span>

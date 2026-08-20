@@ -85,10 +85,12 @@ export default function WorldMapSVG() {
         <path
           key={item.id}
           d={item.path}
-          fill="rgba(225, 29, 72, 0.18)"
-          stroke="rgba(225, 29, 72, 0.65)"
+          fill="currentColor"
+          fillOpacity="0.14"
+          stroke="currentColor"
+          strokeOpacity="0.6"
           strokeWidth="0.75"
-          className="transition-colors hover:fill-[rgba(225,29,72,0.45)] hover:stroke-[rgba(225,29,72,0.95)]"
+          className="text-[var(--carmine)] transition-colors hover:fill-opacity-35 hover:stroke-opacity-95"
         />
       ))}
     </svg>
