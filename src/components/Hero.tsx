@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Copy, Check, ArrowDownRight, Terminal, Download, Gamepad2 } from "lucide-react";
+import { Copy, Check, ArrowDownRight, Terminal, Download, Gamepad2, Activity } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/Icons";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -12,6 +12,44 @@ export default function Hero() {
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [fps, setFps] = useState(60);
+  const [timeStr, setTimeStr] = useState("");
+  const frameCountRef = useRef(0);
+  const lastTimeRef = useRef(performance.now());
+
+  useEffect(() => {
+    let animId: number;
+    const calcFps = (now: number) => {
+      frameCountRef.current++;
+      if (now - lastTimeRef.current >= 1000) {
+        setFps(Math.round((frameCountRef.current * 1000) / (now - lastTimeRef.current)));
+        frameCountRef.current = 0;
+        lastTimeRef.current = now;
+      }
+      animId = requestAnimationFrame(calcFps);
+    };
+    animId = requestAnimationFrame(calcFps);
+
+    const updateClock = () => {
+      const d = new Date();
+      setTimeStr(
+        d.toLocaleTimeString("es-DO", {
+          timeZone: "America/Santo_Domingo",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false
+        })
+      );
+    };
+    updateClock();
+    const clockTimer = setInterval(updateClock, 1000);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      clearInterval(clockTimer);
+    };
+  }, []);
 
   useEffect(() => {
     const currentRole = content.personal.roles[roleIndex % content.personal.roles.length];
@@ -45,9 +83,22 @@ export default function Hero() {
     >
       <div className="flex flex-col gap-4 flex-1 justify-center py-6">
 
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] font-mono-custom text-xs text-[var(--text-muted)] w-fit max-w-full shadow-xs">
-          <Terminal className="w-3.5 h-3.5 text-[var(--carmine)] shrink-0" />
-          <span className="shrink-0">zsh — 80x24</span>
+        <div className="inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] font-mono-custom text-xs text-[var(--text-muted)] w-fit max-w-full shadow-xs">
+          <div className="flex items-center gap-1.5 shrink-0">
+            <Terminal className="w-3.5 h-3.5 text-[var(--carmine)] shrink-0" />
+            <span>zsh — 80x24</span>
+          </div>
+          <span className="text-[var(--text-subtle)] shrink-0">|</span>
+          <div className="flex items-center gap-1 shrink-0 text-[11px] text-[var(--amber-glow)] font-semibold">
+            <Activity className="w-3 h-3 text-[var(--amber-glow)]" />
+            <span>{fps} FPS</span>
+          </div>
+          {timeStr && (
+            <>
+              <span className="text-[var(--text-subtle)] shrink-0 hidden sm:inline">|</span>
+              <span className="text-[11px] text-[var(--text-subtle)] shrink-0 hidden sm:inline">AST {timeStr}</span>
+            </>
+          )}
           <span className="text-[var(--text-subtle)] shrink-0">|</span>
           <span className="text-emerald-500 flex items-center gap-1 min-w-0">
             <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse shrink-0" />

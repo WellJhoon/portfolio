@@ -6,6 +6,7 @@ import { ExternalLink, FolderGit2 } from "lucide-react";
 import { GithubIcon } from "@/components/Icons";
 
 import SpotlightCard from "@/components/SpotlightCard";
+import ProjectSimulator from "@/components/ProjectSimulator";
 
 export default function Projects() {
   const { content } = useLanguage();
@@ -107,6 +108,8 @@ export default function Projects() {
                     </div>
                   ))}
                 </div>
+
+                <ProjectSimulator projectId={project.id} />
               </div>
 
               <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[var(--border)]">
