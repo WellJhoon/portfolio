@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Download, Play, RotateCcw, Volume2, VolumeX, Shuffle, Trophy, Gamepad2, ArrowLeft, ArrowRight, ArrowUp, Swords } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { sound } from "@/lib/sound";
 import TechNinjaGame from "@/components/TechNinjaGame";
 
 interface Player {
