@@ -19,12 +19,14 @@ export async function POST(req: NextRequest) {
     let customLat = headerLat ? parseFloat(headerLat) : undefined;
     let customLng = headerLng ? parseFloat(headerLng) : undefined;
 
+    let deviceId = "";
     try {
       const body = await req.json();
       if (body.countryCode) countryCode = body.countryCode;
       if (body.city) city = body.city;
       if (body.lat !== undefined) customLat = body.lat;
       if (body.lng !== undefined) customLng = body.lng;
+      if (body.deviceId) deviceId = body.deviceId;
     } catch {}
 
     if (!countryCode) {
@@ -32,7 +34,7 @@ export async function POST(req: NextRequest) {
     }
 
     const visitorIp = req.headers.get("x-forwarded-for")?.split(",")[0] || req.headers.get("x-real-ip") || "local-client";
-    const visitorKey = `${visitorIp}-${countryCode}-${city}`;
+    const visitorKey = deviceId ? `${deviceId}-${countryCode}` : `${visitorIp}-${countryCode}-${city}`;
 
     const ping = await recordVisitor(countryCode, city, customLat, customLng, visitorKey);
     const updatedStats = await getRadarStats();

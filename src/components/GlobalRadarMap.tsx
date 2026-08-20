@@ -18,6 +18,16 @@ async function detectClientLocation() {
   return { countryCode: "DO", city: "Santo Domingo" };
 }
 
+function getClientDeviceId(): string {
+  if (typeof window === "undefined") return "";
+  let id = localStorage.getItem("radar_client_id");
+  if (!id) {
+    id = `dev_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    localStorage.setItem("radar_client_id", id);
+  }
+  return id;
+}
+
 export default function GlobalRadarMap() {
   const { language } = useLanguage();
   const [totalVisitors, setTotalVisitors] = useState(0);
@@ -40,10 +50,11 @@ export default function GlobalRadarMap() {
   const sendPing = useCallback(async () => {
     try {
       const loc = await detectClientLocation();
+      const deviceId = getClientDeviceId();
       const res = await fetch("/api/visitors", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loc)
+        body: JSON.stringify({ ...loc, deviceId })
       });
       const data = await res.json();
       if (data.success) {
@@ -56,7 +67,11 @@ export default function GlobalRadarMap() {
 
   useEffect(() => {
     sendPing();
-  }, [sendPing]);
+    const interval = setInterval(() => {
+      fetchRadar();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [sendPing, fetchRadar]);
 
   return (
     <section id="radar" className="py-20 lg:py-28 relative bg-[var(--bg)] border-t border-[var(--border)]">
