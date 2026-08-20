@@ -59,7 +59,7 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden lg:flex items-center gap-8 font-mono-custom text-xs">
-          <nav className="flex items-center gap-6">
+          <nav data-cy="desktop-nav" className="flex items-center gap-6">
             {desktopLinks.map((link) => (
               <Link
                 key={link.href}
@@ -78,6 +78,7 @@ export default function Navbar() {
 
           <button
             type="button"
+            data-cy="nav-cmds-btn"
             onClick={() => {
               window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true }));
             }}

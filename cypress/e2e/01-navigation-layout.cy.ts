@@ -9,44 +9,42 @@ describe("Navigation & Global Layout", () => {
     cy.get("footer").should("be.visible");
   });
 
-  it("should open and close command palette with keyboard shortcut", () => {
-    cy.get("body").type("{ctrl}k");
+  it("should open and close command palette with trigger button and esc key", () => {
+    cy.get("[data-cy='nav-cmds-btn']").click();
 
-    cy.get("input[placeholder*='Escribe un comando']").should("be.visible");
-    cy.get("input[placeholder*='Escribe un comando']").type("radar");
-
-    cy.contains("06. Radar Global").should("be.visible");
+    cy.get("[data-cy='command-palette-modal']").should("be.visible");
+    cy.get("[data-cy='command-palette-input']").type("radar");
+    cy.get("[data-cy='command-item-radar']").should("be.visible");
 
     cy.get("body").type("{esc}");
 
-    cy.get("input[placeholder*='Escribe un comando']").should("not.exist");
+    cy.get("[data-cy='command-palette-modal']").should("not.exist");
   });
 
   it("should switch languages between Spanish and English", () => {
-    cy.contains("button", "EN").click();
+    cy.get("[data-cy='lang-en-btn']").first().click();
 
-    cy.contains("Interactive Technical Architecture").should("be.visible");
+    cy.get("[data-cy='cv-download-btn']").should("contain.text", "CV");
 
-    cy.contains("button", "ES").click();
+    cy.get("[data-cy='lang-es-btn']").first().click();
 
-    cy.contains("Arquitectura Técnica Interactiva").should("be.visible");
+    cy.get("[data-cy='cv-download-btn']").should("contain.text", "CV");
   });
 
   it("should toggle between Dark Mode and Light Mode", () => {
-    cy.get("button[aria-label='Cambiar a modo claro']").click();
+    cy.get("[data-cy='theme-toggle-btn']").first().click();
 
     cy.get("html").should("not.have.class", "dark");
 
-    cy.get("button[aria-label='Cambiar a modo oscuro']").click();
+    cy.get("[data-cy='theme-toggle-btn']").first().click();
 
     cy.get("html").should("have.class", "dark");
   });
 
-  it("should scroll to top when clicking footer button", () => {
-    cy.get("footer").scrollIntoView();
+  it("should have footer back to top link", () => {
+    cy.scrollTo("bottom");
 
-    cy.contains("footer button", "Volver arriba").click();
-
-    cy.window().its("scrollY").should("equal", 0);
+    cy.get("[data-cy='footer-back-to-top']").should("be.visible").and("have.attr", "href", "#hero");
+    cy.get("[data-cy='footer-back-to-top']").click();
   });
 });

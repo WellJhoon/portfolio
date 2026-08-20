@@ -7,7 +7,11 @@ export default function Footer() {
   const { content } = useLanguage();
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
   };
 
   return (
@@ -26,15 +30,16 @@ export default function Footer() {
             <span className="text-emerald-500 font-semibold">System: Operational</span>
           </div>
           <span className="text-[var(--text-subtle)] hidden md:inline">Next.js 16 + TypeScript + Tailwind</span>
-          <button
-            type="button"
+          <a
+            href="#hero"
+            data-cy="footer-back-to-top"
             onClick={scrollToTop}
             className="flex items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 cursor-pointer"
             aria-label="Volver arriba"
           >
             <span>{content.footer.backToTop}</span>
             <ArrowUp className="w-3.5 h-3.5 text-[var(--carmine)]" />
-          </button>
+          </a>
         </div>
       </div>
     </footer>

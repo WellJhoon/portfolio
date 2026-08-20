@@ -54,8 +54,9 @@ export default function ProjectSimulator({ projectId }: ProjectSimulatorProps) {
           {!running && !completed && (
             <button
               type="button"
+              data-cy="project-simulator-start-btn"
               onClick={handleStart}
-              className="flex items-center gap-1 px-2 py-0.5 rounded-xs bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-[10px] font-bold transition-all"
+              className="flex items-center gap-1 px-2 py-0.5 rounded-xs bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-[10px] font-bold transition-all cursor-pointer"
             >
               <Play className="w-2.5 h-2.5 fill-white" />
               <span>{language === "es" ? "Ejecutar Simulación" : "Run Simulation"}</span>

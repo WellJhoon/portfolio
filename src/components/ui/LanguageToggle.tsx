@@ -10,6 +10,7 @@ export default function LanguageToggle() {
     <div className="flex items-center rounded-sm bg-[var(--surface)] border border-[var(--border)] p-0.5 font-mono-custom text-xs shadow-xs">
       <button
         type="button"
+        data-cy="lang-es-btn"
         onClick={() => setLanguage("es")}
         className={`px-2 py-1 rounded-[2px] font-bold transition-all ${
           language === "es"
@@ -23,6 +24,7 @@ export default function LanguageToggle() {
 
       <button
         type="button"
+        data-cy="lang-en-btn"
         onClick={() => setLanguage("en")}
         className={`px-2 py-1 rounded-[2px] font-bold transition-all ${
           language === "en"

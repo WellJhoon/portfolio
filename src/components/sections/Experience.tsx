@@ -7,7 +7,7 @@ export default function Experience() {
   const { content, language } = useLanguage();
 
   return (
-    <section id="experience" className="py-20 lg:py-28 relative">
+    <section id="experience" data-cy="experience-section" className="py-20 lg:py-28 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 mb-12">
           <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">02.</span>

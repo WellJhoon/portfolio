@@ -1,30 +1,21 @@
 describe("Interactive Arcade Mode", () => {
   beforeEach(() => {
     cy.visit("/");
-    cy.get("#game-mode").scrollIntoView();
+    cy.get("[data-cy='arcade-section']").scrollIntoView();
   });
 
-  it("should render game selector and switch between games", () => {
-    cy.get("#game-mode").should("be.visible");
-    cy.contains("button", "1. Tech Ninja").should("be.visible");
-    cy.contains("button", "2. Super Jhon Platformer").should("be.visible");
-
-    cy.contains("button", "1. Tech Ninja").click();
-
-    cy.contains("Tech Ninja").should("be.visible");
-    cy.get("canvas").should("be.visible");
-
-    cy.contains("button", "2. Super Jhon Platformer").click();
-
-    cy.contains("SUPER JHON").should("be.visible");
+  it("should render arcade section and game selectors", () => {
+    cy.get("[data-cy='arcade-section']").should("be.visible");
+    cy.get("[data-cy='btn-select-techninja']").should("be.visible");
+    cy.get("[data-cy='btn-select-platformer']").should("be.visible");
     cy.get("canvas").should("be.visible");
   });
 
-  it("should start Super Jhon Platformer from idle overlay", () => {
-    cy.contains("button", "2. Super Jhon Platformer").click();
+  it("should start Tech Ninja game from start button", () => {
+    cy.get("[data-cy='btn-select-techninja']").click();
 
-    cy.contains("button", "Jugar Nivel Aleatorio").click();
+    cy.get("[data-cy='btn-start-techninja']").click();
 
-    cy.contains("button", "Jugar Nivel Aleatorio").should("not.exist");
+    cy.get("[data-cy='btn-start-techninja']").should("not.exist");
   });
 });

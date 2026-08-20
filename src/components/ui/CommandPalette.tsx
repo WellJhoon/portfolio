@@ -232,6 +232,7 @@ export default function CommandPalette() {
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-start justify-center pt-20 sm:pt-28 px-4 font-mono-custom animate-fadeIn select-none">
       <div
+        data-cy="command-palette-modal"
         className="w-full max-w-xl bg-[var(--surface)] border-2 border-[var(--carmine)] rounded-sm shadow-2xl overflow-hidden flex flex-col"
         onKeyDown={handleKeyDownList}
       >
@@ -253,6 +254,7 @@ export default function CommandPalette() {
           <span className="text-[var(--carmine)] font-bold text-sm">&gt;</span>
           <input
             ref={inputRef}
+            data-cy="command-palette-input"
             type="text"
             value={query}
             onChange={(e) => {
@@ -279,6 +281,7 @@ export default function CommandPalette() {
               return (
                 <button
                   key={cmd.id}
+                  data-cy={`command-item-${cmd.id}`}
                   type="button"
                   onClick={() => {
                     sound.playClick();

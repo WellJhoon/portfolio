@@ -83,54 +83,6 @@ export const metadata: Metadata = {
   }
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Person",
-      "@id": `${siteUrl}/#person`,
-      name: "Jhon Medina",
-      jobTitle: "Senior Full Stack Software Engineer",
-      description:
-        "Software Engineer specialized in distributed transactional architectures, Angular 18+, Java enterprise microservices, .NET Core, and Cypress test automation.",
-      url: siteUrl,
-      sameAs: [
-        "https://github.com/WellJhoon",
-        "https://www.linkedin.com/in/jhon-medina-well"
-      ],
-      knowsAbout: [
-        "Angular",
-        "TypeScript",
-        "JavaScript",
-        "Java",
-        "Spring Boot",
-        ".NET Core",
-        "Next.js",
-        "Cypress",
-        "SQL Server",
-        "MongoDB",
-        "Microservices",
-        "PCI-DSS"
-      ],
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Santo Domingo",
-        addressCountry: "DO"
-      }
-    },
-    {
-      "@type": "WebSite",
-      "@id": `${siteUrl}/#website`,
-      url: siteUrl,
-      name: "Jhon Medina Portfolio",
-      publisher: {
-        "@id": `${siteUrl}/#person`
-      },
-      inLanguage: ["es", "en"]
-    }
-  ]
-};
-
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -145,12 +97,6 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${jetbrainsMono.variable} ${vt323.variable} dark scroll-smooth`}
     >
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
       <body
         suppressHydrationWarning
         className="min-h-screen bg-[var(--bg)] text-[var(--text-primary)] font-sans antialiased flex flex-col selection:bg-[var(--carmine)] selection:text-white overflow-x-hidden w-full max-w-[100vw]"

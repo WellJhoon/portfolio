@@ -18,26 +18,25 @@ describe("Pixel Art Guestbook", () => {
     }).as("getGuestbook");
 
     cy.visit("/");
-    cy.get("#guestbook").scrollIntoView();
+    cy.get("[data-cy='guestbook-section']").scrollIntoView();
   });
 
   it("should render drawing canvas and toolbar buttons", () => {
     cy.wait("@getGuestbook");
 
-    cy.get("#guestbook").should("be.visible");
-    cy.contains("Lienzo 16x16 Pixel Art").should("be.visible");
-    cy.contains("button", "Lápiz").should("be.visible");
-    cy.contains("button", "Relleno").should("be.visible");
-    cy.contains("button", "Borrador").should("be.visible");
+    cy.get("[data-cy='guestbook-section']").should("be.visible");
+    cy.get("[data-cy='pixel-tool-pencil']").should("be.visible");
+    cy.get("[data-cy='pixel-tool-bucket']").should("be.visible");
+    cy.get("[data-cy='pixel-tool-eraser']").should("be.visible");
   });
 
   it("should prevent empty canvas submission with validation error", () => {
     cy.wait("@getGuestbook");
 
-    cy.get("input[placeholder='ej. Alex Dev']").type("Automation Tester");
+    cy.get("[data-cy='guestbook-author-input']").type("Automation Tester");
 
-    cy.contains("button", "Firmar Libro de Visitas").click();
+    cy.get("[data-cy='guestbook-submit-btn']").click();
 
-    cy.contains("¡El lienzo está vacío! Dibuja algo antes de firmar.").should("be.visible");
+    cy.get("[data-cy='guestbook-error-msg']").should("be.visible");
   });
 });
