@@ -19,7 +19,7 @@ const PALETTE = [
   "#64748b"
 ];
 
-const DEFAULT_GRID = Array(256).fill("#000000");
+const DEFAULT_GRID = Array(256).fill("");
 
 interface PixelCanvasProps {
   onSuccess?: () => void;
@@ -66,13 +66,13 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
   const applyPixelColor = (index: number) => {
     if (tool === "bucket") {
-      const targetColor = pixels[index];
+      const targetColor = pixels[index] || "";
       const replacementColor = selectedColor;
       setPixels(floodFill(pixels, index, targetColor, replacementColor));
       return;
     }
 
-    const colorToApply = tool === "eraser" ? "#000000" : selectedColor;
+    const colorToApply = tool === "eraser" ? "" : selectedColor;
     setPixels((prev) => {
       if (prev[index] === colorToApply) return prev;
       const next = [...prev];
@@ -98,20 +98,20 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
   const handleTouchDraw = (e: React.TouchEvent) => {
     if (tool === "bucket") return;
-    const grid = gridRef.current;
-    if (!grid) return;
-
     const touch = e.touches[0];
-    if (!touch) return;
+    if (!touch || !gridRef.current) return;
 
-    const rect = grid.getBoundingClientRect();
+    const rect = gridRef.current.getBoundingClientRect();
     const x = touch.clientX - rect.left;
     const y = touch.clientY - rect.top;
 
-    if (x >= 0 && x < rect.width && y >= 0 && y < rect.height) {
-      const col = Math.floor((x / rect.width) * 16);
-      const row = Math.floor((y / rect.height) * 16);
-      const index = Math.max(0, Math.min(255, row * 16 + col));
+    if (x < 0 || x >= rect.width || y < 0 || y >= rect.height) return;
+
+    const col = Math.floor((x / rect.width) * 16);
+    const row = Math.floor((y / rect.height) * 16);
+    const index = row * 16 + col;
+
+    if (index >= 0 && index < 256) {
       applyPixelColor(index);
     }
   };
@@ -122,28 +122,29 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg("");
-
     if (!authorName.trim()) {
-      setErrorMsg(language === "es" ? "Por favor escribe tu nombre o alias" : "Please enter your name or alias");
+      setErrorMsg(language === "es" ? "Por favor escribe tu nombre o alias." : "Please enter your name or handle.");
       return;
     }
 
-    const isCanvasEmpty = pixels.every((p) => p === "#000000");
-    if (isCanvasEmpty) {
-      setErrorMsg(language === "es" ? "El lienzo está vacío. ¡Haz tu dibujo!" : "Canvas is empty. Draw something!");
+    const hasDrawn = pixels.some((p) => p !== "");
+    if (!hasDrawn) {
+      setErrorMsg(language === "es" ? "¡El lienzo está vacío! Dibuja algo antes de firmar." : "Canvas is empty! Draw something before submitting.");
       return;
     }
 
     setSubmitting(true);
+    setErrorMsg("");
+
     try {
+      const payloadPixels = pixels.map((p) => p || "#000000");
       const res = await fetch("/api/guestbook", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           authorName: authorName.trim(),
           authorSocial: authorSocial.trim() || undefined,
-          pixels
+          pixels: payloadPixels
         })
       });
 
@@ -156,10 +157,10 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
         if (onSuccess) onSuccess();
         setTimeout(() => setSubmitted(false), 5000);
       } else {
-        setErrorMsg(data.error || "Error al enviar");
+        setErrorMsg(data.error || "Ocurrió un error al enviar tu firma.");
       }
     } catch {
-      setErrorMsg(language === "es" ? "Error de conexión" : "Connection error");
+      setErrorMsg("Error de conexión con el servidor.");
     } finally {
       setSubmitting(false);
     }
@@ -169,12 +170,12 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
     <div
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
-      className="p-5 sm:p-7 rounded-sm bg-[var(--surface)] border border-[var(--border)] shadow-xl font-mono-custom space-y-6 select-none"
+      className="p-6 sm:p-8 rounded-sm bg-[var(--surface)] border border-[var(--border)] shadow-xl relative overflow-hidden font-mono-custom transition-colors duration-300"
     >
-      <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
-        <div className="flex items-center gap-2 text-xs">
-          <span className="w-2.5 h-2.5 rounded-full bg-[var(--carmine)]" />
-          <span className="font-bold text-[var(--text-primary)]">
+      <div className="flex items-center justify-between pb-4 mb-6 border-b border-[var(--border)]">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-[var(--carmine)] inline-block" />
+          <span className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider">
             {language === "es" ? "Lienzo 16x16 Pixel Art" : "16x16 Pixel Art Canvas"}
           </span>
         </div>
@@ -187,7 +188,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
             ref={gridRef}
             onTouchStart={handleTouchDraw}
             onTouchMove={handleTouchDraw}
-            className="p-2 bg-[#090b10] border-2 border-[var(--border-strong)] rounded-sm shadow-inner touch-none cursor-crosshair"
+            className="p-2 bg-[var(--surface-raised)] border-2 border-[var(--border-strong)] rounded-sm shadow-inner touch-none cursor-crosshair transition-colors duration-300"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(16, 1fr)",
@@ -202,8 +203,12 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
                 key={index}
                 onPointerDown={() => handlePointerDown(index)}
                 onPointerEnter={() => handlePointerEnter(index)}
-                style={{ backgroundColor: color }}
-                className="w-full h-full rounded-[1px] hover:opacity-80 transition-opacity"
+                style={color ? { backgroundColor: color } : undefined}
+                className={`w-full h-full rounded-[1px] transition-all ${
+                  color
+                    ? "hover:opacity-80 shadow-xs"
+                    : "bg-[var(--surface)] hover:bg-[var(--carmine)]/20 border border-[var(--border)]/40"
+                }`}
               />
             ))}
           </div>
