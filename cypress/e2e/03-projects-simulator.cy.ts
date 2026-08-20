@@ -18,8 +18,8 @@ describe("Projects & Technical Simulators", () => {
   });
 
   it("should run technical simulation in project card", () => {
-    cy.get("[data-cy='project-simulator-start-btn']").first().click();
+    cy.get("[data-cy='project-card-cypress-e2e-suite'] [data-cy='project-simulator-start-btn']").click();
 
-    cy.get("[data-cy='projects-section']").contains("Procesando...").should("be.visible");
+    cy.get("[data-cy='project-card-cypress-e2e-suite'] [data-cy='project-simulator-start-btn']").should("not.exist");
   });
 });
