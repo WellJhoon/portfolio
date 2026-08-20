@@ -49,25 +49,62 @@ portfolio/
 │   └── favicon.svg               # Icono vectorial de marca personal
 ├── src/
 │   ├── app/
+│   │   ├── api/
+│   │   │   ├── guestbook/        # API REST para firmas y moderación Supabase
+│   │   │   └── visitors/         # API de telemetría, geolocalización y radar
 │   │   ├── apple-icon.tsx        # Generador de icono Apple Touch (180x180)
 │   │   ├── icon.tsx              # Generador dinámico de favicon (32x32)
-│   │   ├── globals.css           # Tokens CSS, keyframes de marquee y rejilla
-│   │   ├── layout.tsx            # Layout raíz, carga de fuentes y SEO / OpenGraph
-│   │   └── page.tsx              # Página principal (ensamblado de componentes)
+│   │   ├── globals.css           # Tokens CSS, variables de tema y rejillas
+│   │   ├── layout.tsx            # Root layout con SEO, OpenGraph, Analytics y Speed Insights
+│   │   └── page.tsx              # Página principal (ensamblado de componentes por dominio)
+│   │
 │   ├── components/
-│   │   ├── Navbar.tsx            # Barra de navegación con prompt de terminal y ThemeToggle
-│   │   ├── Hero.tsx              # Cabecera Zsh, titular pixel y selector de roles
-│   │   ├── MarqueeTicker.tsx     # Cinta horizontal infinita de tecnologías
-│   │   ├── Experience.tsx        # Línea de tiempo de experiencia laboral
-│   │   ├── Skills.tsx            # Matriz técnica categorizada
-│   │   ├── Projects.tsx          # Grid de proyectos con filtros interactivos
-│   │   ├── Education.tsx         # Sección de educación y certificaciones
-│   │   ├── Contact.tsx           # Ventana terminal de conexión rápida
-│   │   ├── Footer.tsx            # Pie de página minimalista
-│   │   ├── Icons.tsx             # Iconos SVG independientes (GitHub, LinkedIn)
-│   │   └── ThemeToggle.tsx       # Conmutador de tema con persistencia en localStorage
-│   └── data/
-│       └── portfolio.ts          # Base de datos tipada del portafolio
+│   │   ├── layout/               # Estructura global y navegación fija
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── MobileDock.tsx
+│   │   │   └── MarqueeTicker.tsx
+│   │   │
+│   │   ├── sections/             # Módulos por dominio de la aplicación
+│   │   │   ├── Hero/             # Cabecera interactiva y ParticlePortrait canvas
+│   │   │   │   ├── Hero.tsx
+│   │   │   │   └── ParticlePortrait.tsx
+│   │   │   ├── Experience.tsx    # Línea de tiempo profesional
+│   │   │   ├── Skills.tsx        # Matriz técnica categorizada
+│   │   │   ├── Projects/         # Proyectos con inspector y simulador técnico
+│   │   │   │   ├── Projects.tsx
+│   │   │   │   └── ProjectSimulator.tsx
+│   │   │   ├── Arcade/           # Centro de juegos 2-en-1 con canvas retro
+│   │   │   │   ├── GameMode.tsx
+│   │   │   │   └── TechNinjaGame.tsx
+│   │   │   ├── Radar/            # Mapa topográfico en tiempo real y telemetría
+│   │   │   │   ├── GlobalRadarMap.tsx
+│   │   │   │   └── WorldMapSVG.tsx
+│   │   │   ├── Guestbook/        # Libro de firmas Pixel Art con Supabase
+│   │   │   │   ├── Guestbook.tsx
+│   │   │   │   ├── PixelCanvas.tsx
+│   │   │   │   └── PixelGallery.tsx
+│   │   │   ├── Education.tsx     # Certificaciones y formación académica
+│   │   │   └── Contact.tsx       # Terminal de contacto rápido
+│   │   │
+│   │   └── ui/                   # Componentes atómicos e interactivos
+│   │       ├── CommandPalette.tsx # Paleta de comandos global (Ctrl + K)
+│   │       ├── ThemeToggle.tsx   # Conmutador dinámico de tema claro/oscuro
+│   │       ├── LanguageToggle.tsx# Conmutador i18n (ES / EN)
+│   │       ├── SoundToggle.tsx   # Control de sintetizador de audio web
+│   │       ├── SpotlightCard.tsx # Tarjetas con iluminación dinámica del cursor
+│   │       ├── SecurityAuditor.tsx # Inspector interactivo de seguridad
+│   │       ├── EasterEggKonami.tsx # Modo secreto Konami Code
+│   │       └── Icons.tsx         # Iconografía SVG nativa
+│   │
+│   ├── context/
+│   │   └── LanguageContext.tsx   # Estado global de internacionalización (i18n)
+│   ├── data/
+│   │   └── portfolio.ts          # Fuente de datos centralizada y fuertemente tipada
+│   └── lib/
+│       ├── guestbook.ts          # Cliente y consultas de Supabase para Pixel Art
+│       ├── visitors.ts           # Gestión de pings y deduplicación de visitantes
+│       └── sound.ts              # Motor de síntesis de audio Web Audio API
 ├── package.json
 └── tsconfig.json
 ```
