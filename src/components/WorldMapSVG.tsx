@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-// @ts-expect-error topojson data import
+import { feature } from "topojson-client";
 import worldTopology from "world-atlas/countries-110m.json";
-import * as topojson from "topojson-client";
 
 const MAX_LAT = 84;
 const MIN_LAT = -58;
@@ -62,8 +61,7 @@ function geoToSvgPath(geometry: any, width = 1000, height = 500): string {
 export default function WorldMapSVG() {
   const countryPaths = useMemo(() => {
     try {
-      // @ts-expect-error topojson feature extraction
-      const geojson: any = topojson.feature(worldTopology, worldTopology.objects.countries);
+      const geojson: any = feature(worldTopology as any, (worldTopology as any).objects.countries);
       if (geojson && geojson.features) {
         return geojson.features
           .filter((f: any) => f.id !== "010")
