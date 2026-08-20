@@ -125,7 +125,7 @@ export default function Hero() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-5 border-t border-[var(--border)]">
           <div className="space-y-1.5">
             <span className="font-mono-custom text-[11px] uppercase tracking-wider text-[var(--carmine)] font-semibold">
-              // 01. ABOUT ME
+              {"// 01. ABOUT ME"}
             </span>
             <p className="text-xs text-[var(--text-muted)] leading-relaxed">
               {content.personal.aboutMe}
@@ -134,7 +134,7 @@ export default function Hero() {
 
           <div className="space-y-1.5">
             <span className="font-mono-custom text-[11px] uppercase tracking-wider text-[var(--amber-glow)] font-semibold">
-              // 02. CURRENT FOCUS
+              {"// 02. CURRENT FOCUS"}
             </span>
             <p className="text-xs text-[var(--text-muted)] leading-relaxed">
               {content.personal.rightNow}
@@ -143,7 +143,7 @@ export default function Hero() {
 
           <div className="space-y-1.5">
             <span className="font-mono-custom text-[11px] uppercase tracking-wider text-[var(--text-muted)] font-semibold">
-              // 03. STACK
+              {"// 03. STACK"}
             </span>
             <div className="flex flex-wrap gap-1.5">
               {["Angular 18", "Next.js 16", "Java", ".NET", "Cypress", "TypeScript"].map((s) => (
