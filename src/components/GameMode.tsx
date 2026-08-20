@@ -150,7 +150,7 @@ const LEVELS: LevelConfig[] = [
 ];
 
 export default function GameMode() {
-  const { content } = useLanguage();
+  const { content, language } = useLanguage();
   const [gameModeType, setGameModeType] = useState<"ninja" | "platformer">("ninja");
   const [gameState, setGameState] = useState<"idle" | "playing" | "won" | "gameover">("idle");
   const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
@@ -545,7 +545,14 @@ export default function GameMode() {
   return (
     <section id="game-mode" className="py-20 lg:py-28 relative bg-[var(--surface-raised)]/30 border-y border-[var(--border)] transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+        <div className="flex items-center gap-3 mb-10">
+          <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">05.</span>
+          <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
+            {language === "es" ? "MODO_ARCADE_INTERACTIVO" : "INTERACTIVE_ARCADE_MODE"}
+          </h2>
+          <div className="h-px flex-1 bg-[var(--border)] ml-4" />
+        </div>
+
         <div className="rounded-sm bg-[var(--surface)] border border-[var(--border-strong)] shadow-2xl overflow-hidden font-mono-custom transition-colors duration-300">
           
           <div className="px-4 sm:px-6 py-3.5 bg-[var(--surface-raised)] border-b border-[var(--border)] flex flex-wrap items-center justify-between gap-3 select-none">

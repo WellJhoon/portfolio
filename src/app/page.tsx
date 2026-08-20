@@ -13,6 +13,7 @@ import MobileDock from "@/components/MobileDock";
 import CommandPalette from "@/components/CommandPalette";
 import SecurityAuditor from "@/components/SecurityAuditor";
 import EasterEggKonami from "@/components/EasterEggKonami";
+import GlobalRadarMap from "@/components/GlobalRadarMap";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <Skills />
         <Projects />
         <GameMode />
+        <GlobalRadarMap />
         <Guestbook />
         <Education />
         <Contact />

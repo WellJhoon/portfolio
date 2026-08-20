@@ -21,7 +21,7 @@ export default function Guestbook() {
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">
           <div className="flex items-center gap-3">
-            <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">05.</span>
+            <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">07.</span>
             <div>
               <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
                 {language === "es" ? "Libro de Visitas Pixel Art" : "Pixel Art Guestbook"}

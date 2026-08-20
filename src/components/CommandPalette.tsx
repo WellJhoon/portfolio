@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Terminal, Download, Sparkles, Volume2, Moon, Sun, ArrowRight, ShieldCheck, Gamepad2, X } from "lucide-react";
+import { Terminal, Download, Sparkles, Volume2, Moon, Sun, ArrowRight, ShieldCheck, Gamepad2, X, Globe, Briefcase, Code2, FolderGit2, GraduationCap, Mail, Copy, ExternalLink } from "lucide-react";
 import { sound } from "@/lib/sound";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -45,29 +45,49 @@ export default function CommandPalette() {
 
   const commands: CommandItem[] = [
     {
-      id: "projects",
-      label: language === "es" ? "Ir a Proyectos & Simuladores" : "Go to Projects & Simulators",
-      category: "Navigation",
+      id: "hero",
+      label: language === "es" ? "00. Inicio / Telemetría Principal" : "00. Home / Main Telemetry",
+      category: language === "es" ? "Navegación" : "Navigation",
       icon: Terminal,
       action: () => {
-        window.location.hash = "#projects";
+        window.location.hash = "#hero";
         setOpen(false);
       }
     },
     {
       id: "experience",
-      label: language === "es" ? "Ver Experiencia Laboral (Fintech / Gobierno)" : "View Work Experience (Fintech / Gov)",
-      category: "Navigation",
-      icon: Terminal,
+      label: language === "es" ? "01. Experiencia Laboral (Hacienda / CardNET / Arium)" : "01. Work Experience (Hacienda / CardNET / Arium)",
+      category: language === "es" ? "Navegación" : "Navigation",
+      icon: Briefcase,
       action: () => {
         window.location.hash = "#experience";
         setOpen(false);
       }
     },
     {
+      id: "skills",
+      label: language === "es" ? "02. Habilidades & Stack (.NET / Java / Angular / Cypress)" : "02. Skills & Stack (.NET / Java / Angular / Cypress)",
+      category: language === "es" ? "Navegación" : "Navigation",
+      icon: Code2,
+      action: () => {
+        window.location.hash = "#skills";
+        setOpen(false);
+      }
+    },
+    {
+      id: "projects",
+      label: language === "es" ? "03. Proyectos & Simuladores de Código" : "03. Projects & Code Simulators",
+      category: language === "es" ? "Navegación" : "Navigation",
+      icon: FolderGit2,
+      action: () => {
+        window.location.hash = "#projects";
+        setOpen(false);
+      }
+    },
+    {
       id: "game",
-      label: language === "es" ? "Jugar Tech Ninja Arcade" : "Play Tech Ninja Arcade",
-      category: "Interactive",
+      label: language === "es" ? "04. Modo Arcade (Tech Ninja Canvas)" : "04. Arcade Mode (Tech Ninja Canvas)",
+      category: language === "es" ? "Navegación" : "Navigation",
       icon: Gamepad2,
       action: () => {
         window.location.hash = "#game-mode";
@@ -75,9 +95,19 @@ export default function CommandPalette() {
       }
     },
     {
+      id: "radar",
+      label: language === "es" ? "05. Radar Global de Visitantes (Telemetría Satelital)" : "05. Global Visitor Radar (Satellite Telemetry)",
+      category: language === "es" ? "Navegación" : "Navigation",
+      icon: Globe,
+      action: () => {
+        window.location.hash = "#radar";
+        setOpen(false);
+      }
+    },
+    {
       id: "guestbook",
-      label: language === "es" ? "Firmar Libro de Visitas Pixel" : "Sign Pixel Guestbook",
-      category: "Interactive",
+      label: language === "es" ? "06. Libro de Visitas Pixel Art (16x16)" : "06. Pixel Art Guestbook (16x16)",
+      category: language === "es" ? "Navegación" : "Navigation",
       icon: Sparkles,
       action: () => {
         window.location.hash = "#guestbook";
@@ -85,9 +115,29 @@ export default function CommandPalette() {
       }
     },
     {
+      id: "education",
+      label: language === "es" ? "07. Educación & Certificaciones Oficiales" : "07. Education & Official Certifications",
+      category: language === "es" ? "Navegación" : "Navigation",
+      icon: GraduationCap,
+      action: () => {
+        window.location.hash = "#education";
+        setOpen(false);
+      }
+    },
+    {
+      id: "contact",
+      label: language === "es" ? "08. Contacto Directo & Redes" : "08. Direct Contact & Socials",
+      category: language === "es" ? "Navegación" : "Navigation",
+      icon: Mail,
+      action: () => {
+        window.location.hash = "#contact";
+        setOpen(false);
+      }
+    },
+    {
       id: "download-cv",
       label: language === "es" ? "Descargar CV Oficial (PDF)" : "Download Official CV (PDF)",
-      category: "Actions",
+      category: language === "es" ? "Acciones" : "Actions",
       icon: Download,
       action: () => {
         const link = document.createElement("a");
@@ -101,9 +151,53 @@ export default function CommandPalette() {
       }
     },
     {
+      id: "compose-email",
+      label: language === "es" ? "Redactar Mensaje en Gmail" : "Compose Message in Gmail",
+      category: language === "es" ? "Acciones" : "Actions",
+      icon: Mail,
+      action: () => {
+        window.open(
+          `https://mail.google.com/mail/?view=cm&fs=1&to=jhon437699@gmail.com&su=${encodeURIComponent("Propuesta de Proyecto / Contacto Profesional")}`,
+          "_blank"
+        );
+        setOpen(false);
+      }
+    },
+    {
+      id: "copy-email",
+      label: language === "es" ? "Copiar Email al Portapapeles" : "Copy Email to Clipboard",
+      category: language === "es" ? "Acciones" : "Actions",
+      icon: Copy,
+      action: () => {
+        navigator.clipboard.writeText("jhon437699@gmail.com");
+        sound.playSuccess();
+        setOpen(false);
+      }
+    },
+    {
+      id: "open-github",
+      label: language === "es" ? "Abrir Perfil de GitHub (WellJhoon)" : "Open GitHub Profile (WellJhoon)",
+      category: language === "es" ? "Enlaces" : "Links",
+      icon: ExternalLink,
+      action: () => {
+        window.open("https://github.com/WellJhoon", "_blank");
+        setOpen(false);
+      }
+    },
+    {
+      id: "open-linkedin",
+      label: language === "es" ? "Abrir Perfil de LinkedIn (Jhon Medina)" : "Open LinkedIn Profile (Jhon Medina)",
+      category: language === "es" ? "Enlaces" : "Links",
+      icon: ExternalLink,
+      action: () => {
+        window.open("https://www.linkedin.com/in/jhon-medina-well", "_blank");
+        setOpen(false);
+      }
+    },
+    {
       id: "toggle-sound",
-      label: language === "es" ? "Alternar Audio UI" : "Toggle UI Audio",
-      category: "System",
+      label: language === "es" ? "Alternar Audio Táctil UI" : "Toggle UI Tactile Audio",
+      category: language === "es" ? "Sistema" : "System",
       icon: Volume2,
       action: () => {
         sound.toggleMute();

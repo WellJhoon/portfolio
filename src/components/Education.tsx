@@ -10,7 +10,7 @@ export default function Education() {
     <section id="education" className="py-20 lg:py-28 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 mb-12">
-          <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">06.</span>
+          <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">08.</span>
           <h2 className="font-mono-custom text-2xl sm:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
             {content.educationTitle}
           </h2>
