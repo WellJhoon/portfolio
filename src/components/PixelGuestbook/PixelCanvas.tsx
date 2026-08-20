@@ -50,7 +50,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
       if (visited.has(idx)) continue;
       visited.add(idx);
 
-      if (newGrid[idx] === targetColor) {
+      if ((newGrid[idx] || "") === targetColor) {
         newGrid[idx] = replacementColor;
         const row = Math.floor(idx / 16);
         const col = idx % 16;
@@ -74,7 +74,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
     const colorToApply = tool === "eraser" ? "" : selectedColor;
     setPixels((prev) => {
-      if (prev[index] === colorToApply) return prev;
+      if ((prev[index] || "") === colorToApply) return prev;
       const next = [...prev];
       next[index] = colorToApply;
       return next;
@@ -137,7 +137,10 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
     setErrorMsg("");
 
     try {
-      const payloadPixels = pixels.map((p) => p || "#000000");
+      const isDark = typeof document !== "undefined" && document.documentElement.classList.contains("dark");
+      const defaultBg = isDark ? "#000000" : "#ffffff";
+      const payloadPixels = pixels.map((p) => p || defaultBg);
+
       const res = await fetch("/api/guestbook", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -188,7 +191,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
             ref={gridRef}
             onTouchStart={handleTouchDraw}
             onTouchMove={handleTouchDraw}
-            className="p-2 bg-[var(--surface-raised)] border-2 border-[var(--border-strong)] rounded-sm shadow-inner touch-none cursor-crosshair transition-colors duration-300"
+            className="p-2 bg-[var(--surface-raised)] border-2 border-[var(--border-strong)] rounded-sm shadow-md touch-none cursor-crosshair transition-colors duration-300"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(16, 1fr)",
@@ -206,8 +209,8 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
                 style={color ? { backgroundColor: color } : undefined}
                 className={`w-full h-full rounded-[1px] transition-all ${
                   color
-                    ? "hover:opacity-80 shadow-xs"
-                    : "bg-[var(--surface)] hover:bg-[var(--carmine)]/20 border border-[var(--border)]/40"
+                    ? "hover:opacity-85 shadow-2xs"
+                    : "bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--carmine)] hover:bg-[var(--carmine)]/10"
                 }`}
               />
             ))}

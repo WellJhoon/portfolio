@@ -37,7 +37,7 @@ function PixelArtThumbnail({ pixels, size = 104 }: { pixels: string[]; size?: nu
         height: `${size}px`,
         imageRendering: "pixelated"
       }}
-      className="rounded-xs border border-[var(--border-strong)] block bg-black shadow-inner"
+      className="rounded-xs border border-[var(--border-strong)] block bg-[var(--surface-raised)] shadow-inner"
     />
   );
 }
