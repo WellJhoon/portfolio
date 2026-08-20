@@ -27,7 +27,7 @@ jobs:
           key: cypress-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: TypeScript Typecheck
         run: npx tsc --noEmit
