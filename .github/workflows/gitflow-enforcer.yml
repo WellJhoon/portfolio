@@ -1,23 +1,38 @@
-﻿name: GitFlow Policy Enforcer
+name: GitFlow Policy Enforcer
 
 on:
   pull_request:
-    branches: [master]
-  push:
-    branches: [master]
+    branches: [master, develop]
 
 jobs:
   validate-gitflow:
     name: Verify Branch Flow Integrity
     runs-on: ubuntu-latest
     steps:
-      - name: Validate PR Source Branch (Only 'develop' allowed)
-        if: github.event_name == 'pull_request'
+      - name: Validate GitFlow Branching Rules
         run: |
-          echo "Target Branch: ${{ github.base_ref }}"
-          echo "Source Branch: ${{ github.head_ref }}"
-          if [ "${{ github.head_ref }}" != "develop" ]; then
-            echo "::error::[GITFLOW VIOLATION] Pull Requests targeting 'master' must strictly originate from 'develop'. Source branch '${{ github.head_ref }}' is prohibited."
-            exit 1
+          TARGET="${{ github.base_ref }}"
+          SOURCE="${{ github.head_ref }}"
+
+          echo "Target branch: $TARGET"
+          echo "Source branch: $SOURCE"
+
+          # Reglas para mergear a MASTER (Produccion)
+          if [ "$TARGET" = "master" ]; then
+            if [[ "$SOURCE" =~ ^(develop|release\/.*|hotfix\/.*)$ ]]; then
+              echo "Valid: PR targeting master originates from '$SOURCE'."
+            else
+              echo "::error::[GITFLOW VIOLATION] Pull Requests targeting 'master' must strictly originate from 'develop', 'release/*' or 'hotfix/*'. Source branch '$SOURCE' is forbidden."
+              exit 1
+            fi
           fi
-          echo "GitFlow Validation: PR originates correctly from 'develop'."
+
+          # Reglas para mergear a DEVELOP (Integracion)
+          if [ "$TARGET" = "develop" ]; then
+            if [[ "$SOURCE" =~ ^(feature\/.*|fix\/.*|chore\/.*|refactor\/.*|hotfix\/.*|release\/.*)$ ]]; then
+              echo "Valid: PR targeting develop originates from '$SOURCE'."
+            else
+              echo "::error::[GITFLOW VIOLATION] Pull Requests targeting 'develop' must originate from working branches ('feature/*', 'fix/*', 'chore/*', 'refactor/*', 'hotfix/*'). Source branch '$SOURCE' is forbidden."
+              exit 1
+            fi
+          fi
