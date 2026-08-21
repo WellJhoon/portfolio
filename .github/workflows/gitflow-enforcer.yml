@@ -1,0 +1,23 @@
+﻿name: GitFlow Policy Enforcer
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+jobs:
+  validate-gitflow:
+    name: Verify Branch Flow Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR Source Branch (Only 'develop' allowed)
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Target Branch: ${{ github.base_ref }}"
+          echo "Source Branch: ${{ github.head_ref }}"
+          if [ "${{ github.head_ref }}" != "develop" ]; then
+            echo "::error::[GITFLOW VIOLATION] Pull Requests targeting 'master' must strictly originate from 'develop'. Source branch '${{ github.head_ref }}' is prohibited."
+            exit 1
+          fi
+          echo "GitFlow Validation: PR originates correctly from 'develop'."
