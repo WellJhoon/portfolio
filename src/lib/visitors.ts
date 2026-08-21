@@ -57,7 +57,7 @@ function getSupabaseClient() {
 }
 
 let inMemoryPings: VisitorPing[] = [];
-let seenVisitorKeys = new Set<string>();
+const seenVisitorKeys = new Set<string>();
 
 export function projectCoordinates(lat: number, lng: number): { x: number; y: number } {
   const x = Math.max(2, Math.min(98, ((lng + 180) / 360) * 100));

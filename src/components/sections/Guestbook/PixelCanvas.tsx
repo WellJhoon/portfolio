@@ -219,6 +219,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
           <div className="flex items-center gap-1.5 pt-1">
             <button
               type="button"
+              data-cy="pixel-tool-pencil"
               onClick={() => setTool("pencil")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-sm text-xs transition-all ${
                 tool === "pencil"
@@ -232,6 +233,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
             <button
               type="button"
+              data-cy="pixel-tool-bucket"
               onClick={() => setTool("bucket")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-sm text-xs transition-all ${
                 tool === "bucket"
@@ -245,6 +247,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
             <button
               type="button"
+              data-cy="pixel-tool-eraser"
               onClick={() => setTool("eraser")}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-sm text-xs transition-all ${
                 tool === "eraser"
@@ -314,6 +317,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
               </label>
               <input
                 type="text"
+                data-cy="guestbook-author-input"
                 required
                 maxLength={30}
                 value={authorName}
@@ -349,7 +353,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
             </div>
 
             {errorMsg && (
-              <p className="text-xs text-rose-500 font-semibold">{errorMsg}</p>
+              <p data-cy="guestbook-error-msg" className="text-xs text-rose-500 font-semibold">{errorMsg}</p>
             )}
 
             {submitted && (
@@ -364,6 +368,7 @@ export default function PixelCanvas({ onSuccess }: PixelCanvasProps) {
 
           <button
             type="submit"
+            data-cy="guestbook-submit-btn"
             disabled={submitting}
             className="flex items-center justify-center gap-2 w-full py-3 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-md disabled:opacity-50 group"
           >

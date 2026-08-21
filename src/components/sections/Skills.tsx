@@ -35,7 +35,7 @@ export default function Skills() {
   };
 
   return (
-    <section id="skills" className="py-20 lg:py-28 relative bg-[var(--surface-raised)]/30 border-y border-[var(--border)]">
+    <section id="skills" data-cy="skills-section" className="py-20 lg:py-28 relative bg-[var(--surface-raised)]/30 border-y border-[var(--border)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-3 mb-12">
           <span className="font-mono-custom text-sm font-bold text-[var(--carmine)]">03.</span>
@@ -64,6 +64,7 @@ export default function Skills() {
                   return (
                     <span
                       key={skill.name}
+                      data-cy="skill-badge"
                       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm font-mono-custom text-xs transition-all ${
                         isCore
                           ? "bg-[var(--carmine)]/10 border border-[var(--carmine)]/50 text-[var(--text-primary)] font-semibold shadow-2xs"

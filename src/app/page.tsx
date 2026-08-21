@@ -17,9 +17,63 @@ import CommandPalette from "@/components/ui/CommandPalette";
 import SecurityAuditor from "@/components/ui/SecurityAuditor";
 import EasterEggKonami from "@/components/ui/EasterEggKonami";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jhon-medina.vercel.app";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#person`,
+      name: "Jhon Medina",
+      jobTitle: "Senior Full Stack Software Engineer",
+      description:
+        "Software Engineer specialized in distributed transactional architectures, Angular 18+, Java enterprise microservices, .NET Core, and Cypress test automation.",
+      url: siteUrl,
+      sameAs: [
+        "https://github.com/WellJhoon",
+        "https://www.linkedin.com/in/jhon-medina-well"
+      ],
+      knowsAbout: [
+        "Angular",
+        "TypeScript",
+        "JavaScript",
+        "Java",
+        "Spring Boot",
+        ".NET Core",
+        "Next.js",
+        "Cypress",
+        "SQL Server",
+        "MongoDB",
+        "Microservices",
+        "PCI-DSS"
+      ],
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Santo Domingo",
+        addressCountry: "DO"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      url: siteUrl,
+      name: "Jhon Medina Portfolio",
+      publisher: {
+        "@id": `${siteUrl}/#person`
+      },
+      inLanguage: ["es", "en"]
+    }
+  ]
+};
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
       <main className="flex-1">
         <Hero />

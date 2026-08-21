@@ -20,7 +20,7 @@ export default function Projects() {
   });
 
   return (
-    <section id="projects" className="py-20 lg:py-28 relative">
+    <section id="projects" data-cy="projects-section" className="py-20 lg:py-28 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
           <div className="flex items-center gap-3">
@@ -35,6 +35,7 @@ export default function Projects() {
             {content.projectFilters.map((c) => (
               <button
                 key={c.key}
+                data-cy={`project-filter-${c.key}`}
                 type="button"
                 onClick={() => setFilter(c.key)}
                 className={`px-3 py-1.5 rounded-sm transition-all ${
@@ -53,6 +54,7 @@ export default function Projects() {
           {filteredProjects.map((project) => (
             <SpotlightCard
               key={project.id}
+              data-cy={`project-card-${project.id}`}
               className="p-6 flex flex-col justify-between group shadow-sm hover:border-[var(--carmine)]/60"
             >
               <div className="space-y-4 mb-6">

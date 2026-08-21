@@ -21,19 +21,32 @@ export default function CommandPalette() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const handleToggle = () => {
+      setOpen((prev) => {
+        if (!prev) {
+          try {
+            sound.playOpen();
+          } catch {}
+        }
+        return !prev;
+      });
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen((prev) => {
-          if (!prev) sound.playOpen();
-          return !prev;
-        });
+        handleToggle();
       } else if (e.key === "Escape" && open) {
         setOpen(false);
       }
     };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("toggle-command-palette", handleToggle);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("toggle-command-palette", handleToggle);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -232,6 +245,7 @@ export default function CommandPalette() {
   return (
     <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-start justify-center pt-20 sm:pt-28 px-4 font-mono-custom animate-fadeIn select-none">
       <div
+        data-cy="command-palette-modal"
         className="w-full max-w-xl bg-[var(--surface)] border-2 border-[var(--carmine)] rounded-sm shadow-2xl overflow-hidden flex flex-col"
         onKeyDown={handleKeyDownList}
       >
@@ -253,6 +267,7 @@ export default function CommandPalette() {
           <span className="text-[var(--carmine)] font-bold text-sm">&gt;</span>
           <input
             ref={inputRef}
+            data-cy="command-palette-input"
             type="text"
             value={query}
             onChange={(e) => {
@@ -279,6 +294,7 @@ export default function CommandPalette() {
               return (
                 <button
                   key={cmd.id}
+                  data-cy={`command-item-${cmd.id}`}
                   type="button"
                   onClick={() => {
                     sound.playClick();

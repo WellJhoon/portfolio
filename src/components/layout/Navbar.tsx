@@ -59,7 +59,7 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden lg:flex items-center gap-8 font-mono-custom text-xs">
-          <nav className="flex items-center gap-6">
+          <nav data-cy="desktop-nav" className="flex items-center gap-6">
             {desktopLinks.map((link) => (
               <Link
                 key={link.href}
@@ -78,8 +78,9 @@ export default function Navbar() {
 
           <button
             type="button"
+            data-cy="nav-cmds-btn"
             onClick={() => {
-              window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true }));
+              window.dispatchEvent(new CustomEvent("toggle-command-palette"));
             }}
             className="flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[var(--surface-raised)] border border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--carmine)] hover:text-[var(--text-primary)] transition-all cursor-pointer"
             title="Command Palette (Ctrl + K)"

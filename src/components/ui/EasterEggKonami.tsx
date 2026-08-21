@@ -104,7 +104,10 @@ export default function EasterEggKonami() {
     <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center p-4 font-mono-custom select-none">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
 
-      <div className="relative z-10 w-full max-w-lg bg-[#0c0d12]/95 border-2 border-[var(--carmine)] rounded-sm p-6 shadow-2xl text-center space-y-4 backdrop-blur-md animate-fadeIn">
+      <div
+        data-cy="konami-modal"
+        className="relative z-10 w-full max-w-lg bg-[#0c0d12]/95 border-2 border-[var(--carmine)] rounded-sm p-6 shadow-2xl text-center space-y-4 backdrop-blur-md animate-fadeIn"
+      >
         <div className="flex items-center justify-between pb-3 border-b border-[var(--carmine)]/40 text-xs">
           <div className="flex items-center gap-2 text-[var(--carmine)] font-bold">
             <ShieldAlert className="w-4 h-4" />
@@ -112,8 +115,9 @@ export default function EasterEggKonami() {
           </div>
           <button
             type="button"
+            data-cy="konami-close-btn"
             onClick={() => setActive(false)}
-            className="p-1 text-[var(--text-muted)] hover:text-white"
+            className="p-1 text-[var(--text-muted)] hover:text-white cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -138,11 +142,12 @@ export default function EasterEggKonami() {
 
         <button
           type="button"
+          data-cy="konami-exit-btn"
           onClick={() => {
             sound.playClick();
             setActive(false);
           }}
-          className="w-full py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-md"
+          className="w-full py-2.5 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-md cursor-pointer"
         >
           {language === "es" ? "Cerrar Modo Debug [ESC]" : "Exit Debug Mode [ESC]"}
         </button>

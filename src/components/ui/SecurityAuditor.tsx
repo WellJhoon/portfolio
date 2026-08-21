@@ -27,11 +27,15 @@ export default function SecurityAuditor() {
           if (prev >= 100) {
             setScanning(false);
             setCompleted(true);
-            sound.playSuccess();
+            try {
+              sound.playSuccess();
+            } catch {}
             return 100;
           }
           if (prev % 25 === 0) {
-            sound.playTerminalBeep();
+            try {
+              sound.playTerminalBeep();
+            } catch {}
           }
           return prev + 5;
         });
@@ -41,17 +45,21 @@ export default function SecurityAuditor() {
   }, [scanning]);
 
   const handleStartScan = () => {
-    sound.playClick();
     setProgress(0);
     setCompleted(false);
     setScanning(true);
+    try {
+      sound.playClick();
+    } catch {}
   };
 
   const handleReset = () => {
-    sound.playClick();
     setProgress(0);
     setScanning(false);
     setCompleted(false);
+    try {
+      sound.playClick();
+    } catch {}
   };
 
   const metrics: AuditMetric[] = [
@@ -82,28 +90,29 @@ export default function SecurityAuditor() {
   ];
 
   return (
-    <>
-      <div className="py-6 flex justify-center">
-        <button
-          type="button"
-          onClick={() => {
+    <div className="py-6 flex justify-center relative z-20">
+      <button
+        type="button"
+        data-cy="btn-open-security-auditor"
+        onClick={() => {
+          setOpen(true);
+          try {
             sound.playOpen();
-            setOpen(true);
-          }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm border-2 border-[var(--carmine)] bg-[var(--carmine)]/10 hover:bg-[var(--carmine)] hover:text-white text-[var(--text-primary)] font-mono-custom text-xs font-bold transition-all shadow-md group cursor-pointer"
-        >
-          <ShieldCheck className="w-4 h-4 text-[var(--carmine)] group-hover:text-white transition-colors" />
-          <span>
-            {language === "es"
-              ? "[AUDITORÍA DE SEGURIDAD & COMPLIANCE EN VIVO]"
-              : "[LIVE SECURITY & COMPLIANCE AUDIT SCAN]"}
-          </span>
-        </button>
-      </div>
+          } catch {}
+        }}
+        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-sm border-2 border-[var(--carmine)] bg-[var(--carmine)]/10 hover:bg-[var(--carmine)] hover:text-white text-[var(--text-primary)] font-mono-custom text-xs font-bold transition-all shadow-md group cursor-pointer relative z-20"
+      >
+        <ShieldCheck className="w-4 h-4 text-[var(--carmine)] group-hover:text-white transition-colors" />
+        <span>
+          {language === "es"
+            ? "[AUDITORÍA DE SEGURIDAD & COMPLIANCE EN VIVO]"
+            : "[LIVE SECURITY & COMPLIANCE AUDIT SCAN]"}
+        </span>
+      </button>
 
       {open && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4 font-mono-custom animate-fadeIn select-none">
-          <div className="w-full max-w-2xl bg-[var(--surface)] border-2 border-[var(--carmine)] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+          <div data-cy="security-auditor-modal" className="w-full max-w-2xl bg-[var(--surface)] border-2 border-[var(--carmine)] rounded-sm shadow-2xl overflow-hidden flex flex-col max-h-[90vh] z-50">
             <div className="flex items-center justify-between px-4 py-3 bg-[var(--surface-raised)] border-b border-[var(--border)] text-xs text-[var(--text-muted)]">
               <div className="flex items-center gap-2 text-[var(--carmine)] font-bold">
                 <Lock className="w-4 h-4" />
@@ -113,6 +122,7 @@ export default function SecurityAuditor() {
               </div>
               <button
                 type="button"
+                data-cy="btn-close-security-auditor"
                 onClick={() => setOpen(false)}
                 className="p-1 hover:text-[var(--carmine)] text-[var(--text-muted)] cursor-pointer"
               >
@@ -136,56 +146,68 @@ export default function SecurityAuditor() {
                 {!scanning && !completed && (
                   <button
                     type="button"
+                    data-cy="btn-run-security-scan"
                     onClick={handleStartScan}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-sm shrink-0"
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-sm shrink-0 cursor-pointer"
                   >
                     <Play className="w-3.5 h-3.5 fill-white" />
                     <span>{language === "es" ? "Iniciar Auditoría" : "Run Audit"}</span>
                   </button>
                 )}
 
-                {scanning && (
-                  <div className="flex items-center gap-2 text-xs text-[var(--amber-glow)] font-bold animate-pulse">
-                    <Cpu className="w-4 h-4" />
-                    <span>{progress}% {language === "es" ? "Analizando..." : "Scanning..."}</span>
-                  </div>
-                )}
-
                 {completed && (
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-[var(--border)] hover:border-[var(--carmine)] text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all shrink-0"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-[var(--border)] hover:border-[var(--carmine)] text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all cursor-pointer"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
-                    <span>{language === "es" ? "Re-escanear" : "Rescan"}</span>
+                    <span>{language === "es" ? "Reiniciar" : "Reset"}</span>
                   </button>
                 )}
               </div>
 
-              <div className="w-full bg-[var(--surface-raised)] rounded-full h-1.5 overflow-hidden">
-                <div
-                  className="bg-[var(--carmine)] h-full transition-all duration-100 ease-out"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
+              {scanning && (
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs font-semibold">
+                    <span className="text-[var(--text-muted)]">
+                      {language === "es" ? "Progreso del Escaneo" : "Scan Progress"}
+                    </span>
+                    <span className="text-[var(--carmine)] font-bold">{progress}%</span>
+                  </div>
+                  <div className="w-full h-2 rounded-full bg-[var(--bg)] border border-[var(--border)] overflow-hidden p-0.5">
+                    <div
+                      className="h-full rounded-full bg-[var(--carmine)] transition-all duration-100 shadow-sm"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {metrics.map((m, idx) => (
                   <div
                     key={idx}
-                    className={`p-3.5 rounded-sm border transition-all ${
+                    className={`p-3 rounded-sm border transition-all ${
                       m.status === "verified"
                         ? "bg-emerald-500/5 border-emerald-500/40 text-[var(--text-primary)]"
-                        : "bg-[var(--surface)] border-[var(--border)] opacity-60"
+                        : "bg-[var(--surface-raised)] border-[var(--border)] text-[var(--text-muted)]"
                     }`}
                   >
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="font-bold">{m.title}</span>
+                    <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-[var(--border)]/60">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--text-primary)]">
+                        {idx === 0 && <Lock className="w-3.5 h-3.5 text-[var(--carmine)]" />}
+                        {idx === 1 && <FileCheck className="w-3.5 h-3.5 text-blue-400" />}
+                        {idx === 2 && <Server className="w-3.5 h-3.5 text-emerald-400" />}
+                        {idx === 3 && <Cpu className="w-3.5 h-3.5 text-amber-400" />}
+                        <span className="truncate">{m.title}</span>
+                      </div>
                       {m.status === "verified" ? (
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                       ) : (
-                        <span className="text-[10px] text-[var(--text-subtle)]">PENDING</span>
+                        <span className="text-[9px] uppercase tracking-wider text-[var(--amber-glow)] font-bold">
+                          PENDING
+                        </span>
                       )}
                     </div>
                     <div className="text-xs font-semibold text-[var(--carmine)]">{m.value}</div>
@@ -215,6 +237,6 @@ export default function SecurityAuditor() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

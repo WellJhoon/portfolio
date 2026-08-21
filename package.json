@@ -9,6 +9,8 @@
     "lint": "eslint",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
     "test:e2e": "cypress run"
   },
   "dependencies": {

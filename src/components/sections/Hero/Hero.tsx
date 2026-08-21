@@ -83,13 +83,15 @@ export default function Hero() {
     >
       <div className="flex flex-col gap-6 sm:gap-7 flex-1 justify-center py-8">
 
-        <div className="inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-sm bg-[var(--surface)] border border-[var(--border)] font-mono-custom text-xs text-[var(--text-muted)] w-fit max-w-full shadow-xs">
-          <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2 font-mono-custom text-xs text-[var(--text-muted)]">
+          <div data-cy="hero-prompt" className="flex items-center gap-1.5 bg-[var(--surface)] px-2 py-0.5 rounded-sm border border-[var(--border)]">
             <Terminal className="w-3.5 h-3.5 text-[var(--carmine)] shrink-0" />
-            <span>zsh — 80x24</span>
+            <span className="text-[var(--carmine)] font-bold">jhon@fedora</span>
+            <span>:</span>
+            <span className="text-[var(--text-primary)]">~</span>
+            <span>$</span>
           </div>
-          <span className="text-[var(--text-subtle)] shrink-0">|</span>
-          <div className="flex items-center gap-1 shrink-0 text-[11px] text-[var(--amber-glow)] font-semibold">
+          <div className="flex items-center gap-1 shrink-0 text-[11px] text-[var(--amber-glow)] font-semibold px-2 py-0.5 rounded-sm border border-[var(--border)] bg-[var(--surface)]">
             <Activity className="w-3 h-3 text-[var(--amber-glow)]" />
             <span>{fps} FPS</span>
           </div>
@@ -117,7 +119,7 @@ export default function Hero() {
 
           <div className="mt-3 h-7 flex items-center font-mono-custom text-sm sm:text-lg text-[var(--text-muted)]">
             <span className="text-[var(--carmine)] font-bold mr-2">&gt;</span>
-            <span className="text-[var(--text-primary)] font-semibold truncate">{displayedText}</span>
+            <span data-cy="hero-role-text" className="text-[var(--text-primary)] font-semibold truncate">{displayedText}</span>
             <span className="inline-block w-2 h-4 bg-[var(--carmine)] cursor-blink ml-1 shrink-0" />
           </div>
         </div>
@@ -125,7 +127,7 @@ export default function Hero() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-5 border-t border-[var(--border)]">
           <div className="space-y-1.5">
             <span className="font-mono-custom text-[11px] uppercase tracking-wider text-[var(--carmine)] font-semibold">
-              // 01. ABOUT ME
+              {"// 01. ABOUT ME"}
             </span>
             <p className="text-xs text-[var(--text-muted)] leading-relaxed">
               {content.personal.aboutMe}
@@ -134,7 +136,7 @@ export default function Hero() {
 
           <div className="space-y-1.5">
             <span className="font-mono-custom text-[11px] uppercase tracking-wider text-[var(--amber-glow)] font-semibold">
-              // 02. CURRENT FOCUS
+              {"// 02. CURRENT FOCUS"}
             </span>
             <p className="text-xs text-[var(--text-muted)] leading-relaxed">
               {content.personal.rightNow}
@@ -143,7 +145,7 @@ export default function Hero() {
 
           <div className="space-y-1.5">
             <span className="font-mono-custom text-[11px] uppercase tracking-wider text-[var(--text-muted)] font-semibold">
-              // 03. STACK
+              {"// 03. STACK"}
             </span>
             <div className="flex flex-wrap gap-1.5">
               {["Angular 18", "Next.js 16", "Java", ".NET", "Cypress", "TypeScript"].map((s) => (
@@ -169,6 +171,7 @@ export default function Hero() {
             </Link>
 
             <a
+              data-cy="cv-download-btn"
               href="/jhon-medina-cv.pdf"
               download="Jhon_Medina_CV.pdf"
               className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm border border-[var(--carmine)] bg-[var(--carmine)]/10 hover:bg-[var(--carmine)] hover:text-white text-[var(--text-primary)] font-mono-custom text-xs sm:text-sm font-semibold transition-all group text-center"

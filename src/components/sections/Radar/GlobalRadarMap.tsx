@@ -74,7 +74,7 @@ export default function GlobalRadarMap() {
   }, [sendPing, fetchRadar]);
 
   return (
-    <section id="radar" className="py-20 lg:py-28 relative bg-[var(--bg)] border-t border-[var(--border)]">
+    <section id="radar" data-cy="radar-section" className="py-20 lg:py-28 relative bg-[var(--bg)] border-t border-[var(--border)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
           <div className="flex items-center gap-3">

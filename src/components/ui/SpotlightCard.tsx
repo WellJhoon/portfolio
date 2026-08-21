@@ -3,7 +3,7 @@
 import { useRef, useState, ReactNode } from "react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
-interface SpotlightCardProps {
+interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   className?: string;
   spotlightColor?: string;
@@ -12,7 +12,8 @@ interface SpotlightCardProps {
 export default function SpotlightCard({
   children,
   className = "",
-  spotlightColor = "rgba(225, 29, 72, 0.15)"
+  spotlightColor = "rgba(225, 29, 72, 0.15)",
+  ...props
 }: SpotlightCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -33,6 +34,7 @@ export default function SpotlightCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`relative overflow-hidden rounded-sm bg-[var(--surface)] border border-[var(--border)] transition-colors duration-200 ${className}`}
+      {...props}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-sm opacity-0 transition-opacity duration-300"

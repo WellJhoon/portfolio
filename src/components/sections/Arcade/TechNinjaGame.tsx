@@ -634,8 +634,9 @@ export default function TechNinjaGame() {
             </div>
             <button
               type="button"
+              data-cy="btn-start-techninja"
               onClick={startGame}
-              className="flex items-center gap-2 px-6 py-3 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-lg"
+              className="flex items-center gap-2 px-6 py-3 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-xs font-bold transition-all shadow-lg cursor-pointer"
             >
               <Play className="w-4 h-4 fill-white" />
               <span>{language === "es" ? "Jugar Ahora" : "Play Now"}</span>

@@ -16,7 +16,7 @@ function getSupabaseClient() {
   return createClient(url, key);
 }
 
-let memoryStore: PixelArtEntry[] = [
+const memoryStore: PixelArtEntry[] = [
   {
     id: "demo-1",
     authorName: "Jhon Medina",

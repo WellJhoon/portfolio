@@ -543,7 +543,7 @@ export default function GameMode() {
   };
 
   return (
-    <section id="game-mode" className="py-20 lg:py-28 relative bg-[var(--surface-raised)]/30 border-y border-[var(--border)] transition-colors duration-300">
+    <section id="game-mode" data-cy="arcade-section" className="py-20 lg:py-28 relative bg-[var(--surface-raised)]/30 border-y border-[var(--border)] transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-3">
@@ -560,6 +560,7 @@ export default function GameMode() {
             </span>
             <button
               type="button"
+              data-cy="btn-select-techninja"
               onClick={() => {
                 sound.playClick();
                 setGameModeType("ninja");
@@ -575,6 +576,7 @@ export default function GameMode() {
             </button>
             <button
               type="button"
+              data-cy="btn-select-platformer"
               onClick={() => {
                 sound.playClick();
                 setGameModeType("platformer");
@@ -667,6 +669,7 @@ export default function GameMode() {
                       <div className="flex items-center gap-3 pt-2">
                         <button
                           type="button"
+                          data-cy="btn-start-platformer"
                           onClick={startGame}
                           className="flex items-center gap-2 px-6 py-3 rounded-sm bg-[var(--carmine)] hover:bg-[var(--carmine-light)] text-white text-sm font-bold transition-all shadow-lg group cursor-pointer"
                         >
