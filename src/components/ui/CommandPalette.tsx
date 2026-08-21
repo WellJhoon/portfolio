@@ -21,19 +21,32 @@ export default function CommandPalette() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const handleToggle = () => {
+      setOpen((prev) => {
+        if (!prev) {
+          try {
+            sound.playOpen();
+          } catch {}
+        }
+        return !prev;
+      });
+    };
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen((prev) => {
-          if (!prev) sound.playOpen();
-          return !prev;
-        });
+        handleToggle();
       } else if (e.key === "Escape" && open) {
         setOpen(false);
       }
     };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("toggle-command-palette", handleToggle);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("toggle-command-palette", handleToggle);
+    };
   }, [open]);
 
   useEffect(() => {

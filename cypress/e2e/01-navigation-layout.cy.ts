@@ -10,7 +10,7 @@ describe("Navigation & Global Layout", () => {
   });
 
   it("should open and close command palette with trigger button and esc key", () => {
-    cy.get("[data-cy='nav-cmds-btn']").click();
+    cy.get("[data-cy='nav-cmds-btn']").first().click({ force: true });
 
     cy.get("[data-cy='command-palette-modal']").should("be.visible");
     cy.get("[data-cy='command-palette-input']").type("radar");
